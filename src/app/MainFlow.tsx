@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
+import clsx from "clsx";
 import { Header } from "./components/Header";
 import { ChatInput } from "./components/ChatInput";
 import { ChatMessage } from "./components/ChatMessage";
@@ -6,6 +7,7 @@ import { StrategicBrief } from "./components/StrategicBrief";
 import { ProjectPlan } from "./components/ProjectPlan";
 import { SuccessView } from "./components/SuccessView";
 import { ChatHistorySidebar } from "./components/ChatHistorySidebar";
+import styles from "./MainFlow.module.css";
 
 type Message = {
   id: string;
@@ -167,81 +169,98 @@ export default function MainFlow() {
     : 4;
 
   return (
-    <div className="flex-1 min-h-0 bg-[#f8f9fb] flex flex-col items-center px-[24px] pt-[16px] pb-[40px] overflow-hidden w-full h-full">
-      <div className="w-full max-w-[1200px] flex flex-col h-full">
-          <div className="relative shrink-0">
-            <Header onReset={handleReset} onToggleHistory={() => setShowChatHistory(v => !v)} historyOpen={showChatHistory} historyButtonRef={historyButtonRef} progressStep={progressStep} />
-            {showChatHistory && (
-              <div className="absolute top-[48px] right-0 z-50">
-                <ChatHistorySidebar onClose={() => setShowChatHistory(false)} excludeRef={historyButtonRef} />
-              </div>
-            )}
-          </div>
+    <div className={styles.page}>
+      <div className={styles.inner}>
+        <div className={styles.headerWrapper}>
+          <Header onReset={handleReset} onToggleHistory={() => setShowChatHistory(v => !v)} historyOpen={showChatHistory} historyButtonRef={historyButtonRef} progressStep={progressStep} />
+          {showChatHistory && (
+            <div className={styles.historyDropdown}>
+              <ChatHistorySidebar onClose={() => setShowChatHistory(false)} excludeRef={historyButtonRef} />
+            </div>
+          )}
+        </div>
 
-          <div className={`flex w-full flex-1 min-h-0 gap-8 transition-all duration-500 ${documentType !== 'none' ? 'justify-between' : 'justify-center'}`}>
+        <div className={clsx(
+          styles.contentRow,
+          documentType !== 'none' ? styles.contentRowSpread : styles.contentRowCenter
+        )}>
 
-            {documentType !== 'none' && (
-              <div className={`flex-1 ${documentType === 'success' || documentType === 'routing' ? 'w-full' : 'w-2/3'} flex flex-col bg-transparent animate-in slide-in-from-left duration-500 h-full overflow-hidden`}>
-                {documentType === 'brief' && (
-                  <StrategicBrief
-                    data={briefData}
-                    onUpdate={setBriefData}
-                    onApprove={handleApproveBrief}
-                  />
-                )}
-                {documentType === 'generating' && (
-                  <div className="bg-white rounded-lg shadow-sm border border-gray-200 h-full flex flex-col items-center justify-center p-6 animate-in fade-in duration-500">
-                    <div className="w-12 h-12 border-4 border-[#008AC0] border-t-transparent rounded-full animate-spin mb-6"></div>
-                    <p className="text-[#0c2737] font-bold text-xl mb-2">Generating Project Plan...</p>
-                    <p className="text-gray-500 text-sm">Analyzing strategic brief and identifying workstreams</p>
+          {documentType !== 'none' && (
+            <div className={clsx(
+              styles.documentPanel,
+              (documentType === 'success' || documentType === 'routing') && styles.documentPanelFull
+            )}>
+              {documentType === 'brief' && (
+                <StrategicBrief
+                  data={briefData}
+                  onUpdate={setBriefData}
+                  onApprove={handleApproveBrief}
+                />
+              )}
+              {documentType === 'generating' && (
+                <div className={styles.generatingPanel}>
+                  <div className={styles.generatingSpinner}></div>
+                  <p className={styles.generatingTitle}>Generating Project Plan...</p>
+                  <p className={styles.generatingSubtitle}>Analyzing strategic brief and identifying workstreams</p>
+                </div>
+              )}
+              {documentType === 'routing' && (
+                <div className={styles.routingPanel}>
+                  <div className={styles.routingCard}>
+                    <div className={styles.routingSpinner}></div>
+                    <p className={styles.routingTitle}>Routing Workstreams...</p>
+                    <p className={styles.routingSubtitle}>Creating jobs and tasks in management platforms</p>
+                  </div>
+                </div>
+              )}
+              {documentType === 'plan' && <ProjectPlan briefData={briefData} planData={planData} onUpdateBrief={setBriefData} onUpdatePlan={setPlanData} onBackToBrief={() => setStep(2)} onApprove={handleApprovePlan} />}
+              {documentType === 'success' && <SuccessView briefData={briefData} planData={planData} />}
+            </div>
+          )}
+
+          {documentType !== 'success' && documentType !== 'routing' && (
+            <div className={clsx(
+              styles.chatColumn,
+              documentType !== 'none' ? styles.chatColumnNarrow : styles.chatColumnWide,
+              documentType === 'none' && step === 0 && messages.length === 0 && styles.chatColumnWideCenter,
+              documentType === 'none' && !(step === 0 && messages.length === 0) && styles.chatColumnWidePadded
+            )}>
+
+              {step === 0 && messages.length === 0 && (
+                <p className={styles.chatHeading}>Tell me about your project.</p>
+              )}
+
+              <div className={clsx(
+                (messages.length > 0 || isAiTyping) ? styles.messagesList : styles.messagesHidden,
+                'custom-scrollbar'
+              )}>
+                {messages.map((msg) => (
+                  <ChatMessage key={msg.id} sender={msg.sender} text={msg.text} />
+                ))}
+                {isAiTyping && (
+                  <div className={styles.typingIndicator}>
+                    AI is typing...
                   </div>
                 )}
-                {documentType === 'routing' && (
-                  <div className="bg-[#f8f9fb] h-full flex flex-col items-center justify-center p-6 animate-in fade-in duration-500">
-                    <div className="bg-white rounded-lg shadow-[0px_0px_4px_0px_rgba(0,0,0,0.08),8px_8px_16px_0px_rgba(0,0,0,0.12)] p-10 w-full max-w-[700px] flex flex-col items-center justify-center min-h-[300px]">
-                      <div className="w-12 h-12 border-4 border-[#48801C] border-t-transparent rounded-full animate-spin mb-6"></div>
-                      <p className="text-[#0c2737] font-bold text-xl mb-2">Routing Workstreams...</p>
-                      <p className="text-gray-500 text-sm">Creating jobs and tasks in management platforms</p>
-                    </div>
-                  </div>
-                )}
-                {documentType === 'plan' && <ProjectPlan briefData={briefData} planData={planData} onUpdateBrief={setBriefData} onUpdatePlan={setPlanData} onBackToBrief={() => setStep(2)} onApprove={handleApprovePlan} />}
-                {documentType === 'success' && <SuccessView briefData={briefData} planData={planData} />}
+                <div ref={messagesEndRef} />
               </div>
-            )}
 
-            {documentType !== 'success' && documentType !== 'routing' && (
-              <div className={`flex flex-col h-full transition-all duration-500 ${documentType !== 'none' ? 'w-1/3 min-w-[360px]' : `w-[600px] ${step === 0 && messages.length === 0 ? 'justify-center' : 'pt-24'}`}`}>
-
-                {step === 0 && messages.length === 0 && (
-                  <p className="font-['Arial_Nova:Bold',sans-serif] leading-[36px] text-[30px] text-[#0077ac] mb-6 tracking-[-0.225px] w-full text-left">Tell me about your project.</p>
-                )}
-
-                <div className={`${messages.length > 0 || isAiTyping ? 'flex-1 min-h-0 pb-6' : 'hidden'} overflow-y-auto w-full flex flex-col gap-6 px-2 custom-scrollbar`}>
-                  {messages.map((msg) => (
-                    <ChatMessage key={msg.id} sender={msg.sender} text={msg.text} />
-                  ))}
-                  {isAiTyping && (
-                    <div className="flex items-center text-[#0c2737] text-[15px] p-4 font-medium opacity-50">
-                      AI is typing...
-                    </div>
-                  )}
-                  <div ref={messagesEndRef} />
-                </div>
-
-                <div className={`w-full shrink-0 ${step === 0 && messages.length === 0 ? '' : 'mt-auto pt-4'}`}>
-                  <ChatInput
-                    onSend={handleSendMessage}
-                    placeholder={getSuggestedPlaceholder()}
-                    compact={documentType !== 'none'}
-                    hasMessages={messages.length > 0}
-                  />
-                </div>
-
+              <div className={clsx(
+                styles.inputWrapper,
+                !(step === 0 && messages.length === 0) && styles.inputWrapperSpaced
+              )}>
+                <ChatInput
+                  onSend={handleSendMessage}
+                  placeholder={getSuggestedPlaceholder()}
+                  compact={documentType !== 'none'}
+                  hasMessages={messages.length > 0}
+                />
               </div>
-            )}
-          </div>
+
+            </div>
+          )}
         </div>
       </div>
+    </div>
   );
 }

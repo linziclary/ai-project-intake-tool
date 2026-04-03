@@ -1,14 +1,9 @@
 import { createBrowserRouter } from "react-router";
 import { Outlet } from "react-router";
 import MainFlow from "./MainFlow";
-import AppShell from "../imports/MojoTechExecutiveDashboardMockup-25-2011";
 
 function Root() {
-  return (
-    <AppShell>
-      <Outlet />
-    </AppShell>
-  );
+  return <Outlet />;
 }
 
 export const router = createBrowserRouter([

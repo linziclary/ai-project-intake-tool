@@ -1,6 +1,5 @@
 import { defineConfig } from 'vite'
 import path from 'path'
-import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 
 // Plugin to handle figma:asset/ imports by returning empty string
@@ -23,7 +22,6 @@ function figmaAssetPlugin() {
 export default defineConfig({
   plugins: [
     react(),
-    tailwindcss(),
     figmaAssetPlugin(),
   ],
   resolve: {

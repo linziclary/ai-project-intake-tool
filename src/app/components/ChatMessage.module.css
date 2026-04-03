@@ -1,0 +1,32 @@
+.userRow {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+}
+
+.userBubble {
+  background-color: #e4e8ea;
+  color: #0c2737;
+  border-radius: 20px;
+  padding: 16px 20px;
+  max-width: 90%;
+  font-size: 15px;
+  line-height: 22px;
+  font-family: 'Arial Nova:Regular', sans-serif;
+}
+
+.aiRow {
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+}
+
+.aiText {
+  color: #0c2737;
+  padding: 8px;
+  width: 100%;
+  font-size: 15px;
+  line-height: 22px;
+  font-family: 'Arial Nova:Regular', sans-serif;
+  white-space: pre-wrap;
+}

@@ -1,23 +1,27 @@
 import React from "react";
+import clsx from "clsx";
 import svgPaths from "../../imports/svg-4tpnsq9f7b";
+import styles from "./Header.module.css";
 
 const STEP_LABELS = ["Project details", "Strategic Brief Draft", "Project Plan Draft", "Complete!"];
 
 function ProgressBar({ step }: { step: number }) {
   const label = STEP_LABELS[Math.min(step - 1, 3)];
   return (
-    <div className="flex flex-col gap-[4px] items-start">
-      <p className="font-['Arial_Nova:Regular',sans-serif] leading-[14px] text-[12px] text-[#0077ac] whitespace-nowrap">
-        {label}
-      </p>
-      <div className="flex gap-[4px] items-center">
+    <div className={styles.progressBar}>
+      <p className={styles.progressLabel}>{label}</p>
+      <div className={styles.progressSegments}>
         {[1, 2, 3, 4].map((seg) => {
           const filled = seg <= step;
           const active = seg === step;
           return (
             <div
               key={seg}
-              className={`h-[8px] rounded-[8px] transition-all duration-500 ${filled ? "bg-[#008ac0]" : "bg-[#e6e9eb]"} ${active ? "w-[80px]" : "w-[40px]"}`}
+              className={clsx(
+                styles.segment,
+                filled ? styles.segmentFilled : styles.segmentEmpty,
+                active ? styles.segmentActive : styles.segmentInactive
+              )}
             />
           );
         })}
@@ -40,14 +44,14 @@ export function Header({
   progressStep?: number;
 }) {
   return (
-    <div className="flex h-[44px] items-center justify-between relative shrink-0 w-full mb-8" data-name="Container">
-      <div className="flex gap-[12px] items-center" data-name="Container">
+    <div className={styles.header} data-name="Container">
+      <div className={styles.logoArea} data-name="Container">
         <div
-          className="h-[48px] relative shrink-0 w-[109.97px] cursor-pointer hover:opacity-80 transition-opacity"
+          className={styles.logo}
           onClick={onReset}
           data-name="Group"
         >
-          <svg className="absolute block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 109.97 48">
+          <svg style={{ position: 'absolute', display: 'block', width: '100%', height: '100%' }} fill="none" preserveAspectRatio="none" viewBox="0 0 109.97 48">
             <g id="Group">
               <path d={svgPaths.p3284f00} fill="#0C2737" id="Vector" />
               <path d={svgPaths.p93dec00} fill="#48801C" id="Vector_2" />
@@ -63,26 +67,22 @@ export function Header({
         {progressStep > 0 ? (
           <ProgressBar step={progressStep} />
         ) : (
-          <div className="bg-[#008ac0] relative rounded-[32px] shrink-0" data-name="Chip">
-            <div className="flex flex-row items-center justify-center size-full">
-              <div className="content-stretch flex items-center justify-center px-[12px] py-[6px] relative size-full">
-                <p className="font-['Arial_Nova:Bold',sans-serif] leading-[14px] not-italic relative shrink-0 text-[12px] text-white whitespace-nowrap">Project Assistant</p>
-              </div>
-            </div>
+          <div className={styles.chip} data-name="Chip">
+            <p className={styles.chipLabel}>Project Assistant</p>
           </div>
         )}
       </div>
 
-      <div className="flex gap-[8px] items-center shrink-0">
+      <div className={styles.buttonGroup}>
         {/* New Chat button */}
         <button
           onClick={onReset}
-          className="bg-[#48801c] flex gap-[4px] items-center justify-center px-[12px] py-[8px] rounded-[8px] hover:bg-[#3d6e17] transition-colors"
+          className={styles.newChatButton}
         >
-          <p className="font-['Arial_Nova:Regular',sans-serif] leading-[14px] text-[12px] text-white whitespace-nowrap">New Chat</p>
-          <div className="relative shrink-0 size-[15px]">
-            <div className="absolute inset-[15%]">
-              <svg className="absolute block size-full" fill="none" viewBox="0 0 10.5 10.5">
+          <p className={styles.newChatLabel}>New Chat</p>
+          <div className={styles.iconContainer}>
+            <div className={styles.iconInsetPlus}>
+              <svg style={{ position: 'absolute', display: 'block', width: '100%', height: '100%' }} fill="none" viewBox="0 0 10.5 10.5">
                 <path d="M5.25 0C5.526 0 5.75 0.224 5.75 0.5V4.75H10C10.276 4.75 10.5 4.974 10.5 5.25C10.5 5.526 10.276 5.75 10 5.75H5.75V10C5.75 10.276 5.526 10.5 5.25 10.5C4.974 10.5 4.75 10.276 4.75 10V5.75H0.5C0.224 5.75 0 5.526 0 5.25C0 4.974 0.224 4.75 0.5 4.75H4.75V0.5C4.75 0.224 4.974 0 5.25 0Z" fill="white" />
               </svg>
             </div>
@@ -93,11 +93,14 @@ export function Header({
         <button
           ref={historyButtonRef}
           onClick={onToggleHistory}
-          className={`flex items-center justify-center rounded-[8px] w-[31px] h-[31px] transition-colors ${historyOpen ? "bg-[#48801c] hover:bg-[#3d6e17]" : "border border-[#48801c] hover:bg-gray-50"}`}
+          className={clsx(
+            styles.historyButton,
+            historyOpen ? styles.historyButtonOpen : styles.historyButtonClosed
+          )}
         >
-          <div className="relative shrink-0 size-[15px]">
-            <div className="absolute bottom-1/4 left-[5%] right-[6.67%] top-1/4">
-              <svg className="absolute block size-full" fill="none" viewBox="0 0 13.25 7.5">
+          <div className={styles.iconContainer}>
+            <div className={styles.iconInset}>
+              <svg style={{ position: 'absolute', display: 'block', width: '100%', height: '100%' }} fill="none" viewBox="0 0 13.25 7.5">
                 <path d="M0.75 6C1.164 6 1.5 6.336 1.5 6.75C1.5 7.164 1.164 7.5 0.75 7.5C0.336 7.5 0 7.164 0 6.75C0 6.336 0.336 6 0.75 6ZM12.75 6.25C13.026 6.25 13.25 6.474 13.25 6.75C13.25 7.026 13.026 7.25 12.75 7.25H3.75C3.474 7.25 3.25 7.026 3.25 6.75C3.25 6.474 3.474 6.25 3.75 6.25H12.75ZM0.75 3C1.164 3 1.5 3.336 1.5 3.75C1.5 4.164 1.164 4.5 0.75 4.5C0.336 4.5 0 4.164 0 3.75C0 3.336 0.336 3 0.75 3ZM12.75 3.25C13.026 3.25 13.25 3.474 13.25 3.75C13.25 4.026 13.026 4.25 12.75 4.25H3.75C3.474 4.25 3.25 4.026 3.25 3.75C3.25 3.474 3.474 3.25 3.75 3.25H12.75ZM0.75 0C1.164 0 1.5 0.336 1.5 0.75C1.5 1.164 1.164 1.5 0.75 1.5C0.336 1.5 0 1.164 0 0.75C0 0.336 0.336 0 0.75 0ZM12.75 0.25C13.026 0.25 13.25 0.474 13.25 0.75C13.25 1.026 13.026 1.25 12.75 1.25H3.75C3.474 1.25 3.25 1.026 3.25 0.75C3.25 0.474 3.474 0.25 3.75 0.25H12.75Z" fill={historyOpen ? "white" : "#48801C"} />
               </svg>
             </div>

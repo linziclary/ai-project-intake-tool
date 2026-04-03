@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import clsx from "clsx";
 import { Calendar } from "lucide-react";
+import styles from "./ProjectPlan.module.css";
 
 interface ProjectPlanProps {
   briefData: any;
@@ -10,42 +12,35 @@ interface ProjectPlanProps {
   onApprove: () => void;
 }
 
-const ALL_CHANNELS = ["Web", "Email", "Paid Media", "Analytics", "UX", "AI", "Event"];
-
 // Reused icon primitives
-const CheckIcon = () => (
-  <svg className="absolute block size-full" fill="none" viewBox="0 0 9 8">
-    <path d="M1 4L3.5 6.5L8 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-);
 const PlusIcon = ({ color = "#72797E" }: { color?: string }) => (
-  <svg className="absolute block size-full" fill="none" viewBox="0 0 11 11">
+  <svg style={{ position: 'absolute', display: 'block', width: '100%', height: '100%' }} fill="none" viewBox="0 0 11 11">
     <path d="M5.5 0C5.77614 0 6 0.223858 6 0.5V5H10.5C10.7761 5 11 5.22386 11 5.5C11 5.77614 10.7761 6 10.5 6H6V10.5C6 10.7761 5.77614 11 5.5 11C5.22386 11 5 10.7761 5 10.5V6H0.5C0.223858 6 0 5.77614 0 5.5C0 5.22386 0.223858 5 0.5 5H5V0.5C5 0.223858 5.22386 0 5.5 0Z" fill={color} />
   </svg>
 );
 
 const ArrowLeftIcon = () => (
-  <svg className="absolute block size-full" fill="none" viewBox="0 0 15 15">
+  <svg style={{ position: 'absolute', display: 'block', width: '100%', height: '100%' }} fill="none" viewBox="0 0 15 15">
     <path d="M9.5 3L5.5 7.5L9.5 12" stroke="#48801C" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
 const ShareIcon = () => (
-  <svg className="absolute block size-full" fill="none" viewBox="0 0 15 15">
+  <svg style={{ position: 'absolute', display: 'block', width: '100%', height: '100%' }} fill="none" viewBox="0 0 15 15">
     <path d="M7.5 1.5V10M7.5 1.5L4.5 4.5M7.5 1.5L10.5 4.5" stroke="#48801C" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     <path d="M2 10V12.5C2 13.05 2.45 13.5 3 13.5H12C12.55 13.5 13 13.05 13 12.5V10" stroke="#48801C" strokeWidth="1.5" strokeLinecap="round" />
   </svg>
 );
 
 const CheckCircledIcon = () => (
-  <svg className="absolute block size-full" fill="none" viewBox="0 0 15 15">
+  <svg style={{ position: 'absolute', display: 'block', width: '100%', height: '100%' }} fill="none" viewBox="0 0 15 15">
     <circle cx="7.5" cy="7.5" r="6.125" stroke="white" strokeWidth="1.25" />
     <path d="M4.5 7.5L6.5 9.5L10.5 5.5" stroke="white" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
 const CircleBullet = () => (
-  <svg className="absolute block size-full" fill="none" viewBox="0 0 15 15">
+  <svg style={{ position: 'absolute', display: 'block', width: '100%', height: '100%' }} fill="none" viewBox="0 0 15 15">
     <circle cx="7.5" cy="7.5" r="6.125" stroke="#b5bdc3" strokeWidth="1.25" />
   </svg>
 );
@@ -73,12 +68,12 @@ const TrashIcon = () => (
 
 function ChannelsDisplay({ channels }: { channels: string[] }) {
   return (
-    <div className="content-stretch flex flex-col gap-[4px] items-start shrink-0">
-      <p className="font-['Arial_Nova:Regular',sans-serif] leading-[14px] text-[#72797e] text-[12px]">Channels involved</p>
-      <div className="flex flex-wrap gap-[4px]">
+    <div className={styles.channelsWrapper}>
+      <p className={styles.channelsLabel}>Channels involved</p>
+      <div className={styles.channelPills}>
         {(channels || []).map((channel) => (
-          <div key={channel} className="bg-[#e1f5ff] content-stretch flex items-center justify-center px-[8px] py-[4px] rounded-[32px] shrink-0">
-            <p className="font-['Arial_Nova:Regular',sans-serif] leading-[14px] text-[12px] text-[#0077ac] whitespace-nowrap">{channel}</p>
+          <div key={channel} className={styles.channelPill}>
+            <p className={styles.channelPillLabel}>{channel}</p>
           </div>
         ))}
       </div>
@@ -90,7 +85,7 @@ type EditingDel = { wsIdx: number; delIdx: number } | null;
 type NewDel = { wsIdx: number } | null;
 type EditingFooter = { wsIdx: number; field: "timeline" | "approver" } | null;
 
-export function ProjectPlan({ briefData, planData, onUpdateBrief, onUpdatePlan, onBackToBrief, onApprove }: ProjectPlanProps) {
+export function ProjectPlan({ briefData, planData, onUpdateBrief: _onUpdateBrief, onUpdatePlan, onBackToBrief, onApprove }: ProjectPlanProps) {
   const [hoveredDel, setHoveredDel] = useState<{ wsIdx: number; delIdx: number } | null>(null);
   const [editingDel, setEditingDel] = useState<EditingDel>(null);
   const [editingDelValue, setEditingDelValue] = useState("");
@@ -147,52 +142,52 @@ export function ProjectPlan({ briefData, planData, onUpdateBrief, onUpdatePlan, 
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-[0px_0px_4px_0px_rgba(0,0,0,0.08),8px_8px_16px_0px_rgba(0,0,0,0.12)] h-full flex flex-col px-[40px] py-[24px] overflow-y-auto custom-scrollbar gap-[24px]">
+    <div className={clsx(styles.container, 'custom-scrollbar')}>
 
       {/* Header */}
-      <div className="flex items-start gap-[8px] shrink-0 w-full">
-        <div className="flex flex-1 flex-col gap-[8px] min-w-0">
-          <p className="font-['Arial_Nova:Regular',sans-serif] leading-[18px] text-[#0077ac] text-[14px]">Project Plan Draft</p>
-          <p className="font-['Arial_Nova:Bold',sans-serif] leading-[24px] text-[20px] text-[#0c2737] tracking-[-0.1px] whitespace-nowrap">
+      <div className={styles.planHeader}>
+        <div className={styles.planHeaderLeft}>
+          <p className={styles.planSubtitle}>Project Plan Draft</p>
+          <p className={styles.planTitle}>
             {briefData.title || "Renew Energy Promotion Web Page"}
           </p>
         </div>
 
-        <div className="flex gap-[8px] items-start shrink-0">
+        <div className={styles.planHeaderRight}>
           <button
             onClick={onBackToBrief}
-            className="border border-[#48801c] flex items-center justify-center px-[8px] py-[8px] rounded-[8px] w-[31px] h-[31px] hover:bg-gray-50 transition-colors"
+            className={styles.iconButton}
           >
-            <div className="relative size-[15px]"><ArrowLeftIcon /></div>
+            <div className={styles.iconRef}><ArrowLeftIcon /></div>
           </button>
-          <button className="border border-[#48801c] flex items-center justify-center px-[8px] py-[8px] rounded-[8px] w-[31px] h-[31px] hover:bg-gray-50 transition-colors">
-            <div className="relative size-[15px]"><ShareIcon /></div>
+          <button className={styles.iconButton}>
+            <div className={styles.iconRef}><ShareIcon /></div>
           </button>
           <button
             onClick={onApprove}
-            className="bg-[#48801c] flex gap-[4px] items-center justify-center px-[12px] py-[8px] rounded-[8px] hover:bg-[#3d6e17] transition-colors"
+            className={styles.approveButton}
           >
-            <p className="font-['Arial_Nova:Regular',sans-serif] leading-[14px] text-[12px] text-white whitespace-nowrap">Approve Plan</p>
-            <div className="relative shrink-0 size-[15px]">
-              <div className="absolute inset-[5.85%]"><CheckCircledIcon /></div>
+            <p className={styles.approveLabel}>Approve Plan</p>
+            <div className={styles.iconRef}>
+              <div className={styles.iconAbsolute}><CheckCircledIcon /></div>
             </div>
           </button>
         </div>
       </div>
 
       {/* Metadata */}
-      <div className="flex gap-[4px] items-start shrink-0 w-full">
-        <div className="flex flex-col gap-[4px] items-start w-[202px]">
-          <p className="font-['Arial_Nova:Regular',sans-serif] leading-[18px] text-[#0c2737] text-[14px] whitespace-nowrap">{briefData.projectType || "Campaign (Multi Channel)"}</p>
-          <p className="font-['Arial_Nova:Regular',sans-serif] leading-[18px] text-[#0c2737] text-[14px] whitespace-nowrap">{briefData.priority}</p>
+      <div className={styles.metaRow}>
+        <div className={styles.metaCol}>
+          <p className={styles.metaText}>{briefData.projectType || "Campaign (Multi Channel)"}</p>
+          <p className={styles.metaText}>{briefData.priority}</p>
         </div>
-        <div className="flex flex-col gap-[4px] items-start w-[202px]">
-          <p className="font-['Arial_Nova:Regular',sans-serif] leading-[18px] text-[#0c2737] text-[14px] whitespace-nowrap">{briefData.initiative}</p>
-          <p className="font-['Arial_Nova:Regular',sans-serif] leading-[18px] text-[#0c2737] text-[14px] whitespace-nowrap">{briefData.dueDate}</p>
+        <div className={styles.metaCol}>
+          <p className={styles.metaText}>{briefData.initiative}</p>
+          <p className={styles.metaText}>{briefData.dueDate}</p>
         </div>
-        <div className="flex flex-col gap-[4px] items-start w-[202px]">
-          <p className="font-['Arial_Nova:Regular',sans-serif] leading-[18px] text-[#0c2737] text-[14px] whitespace-nowrap">{briefData.businessUnit}</p>
-          <p className="font-['Arial_Nova:Regular',sans-serif] leading-[18px] text-[#0c2737] text-[14px] whitespace-nowrap">{briefData.wbsCode || "—"}</p>
+        <div className={styles.metaCol}>
+          <p className={styles.metaText}>{briefData.businessUnit}</p>
+          <p className={styles.metaText}>{briefData.wbsCode || "—"}</p>
         </div>
       </div>
 
@@ -200,34 +195,34 @@ export function ProjectPlan({ briefData, planData, onUpdateBrief, onUpdatePlan, 
       <ChannelsDisplay channels={briefData.channels || []} />
 
       {/* Channels & Deliverables */}
-      <div className="flex flex-col gap-[8px] shrink-0 w-full">
-        <p className="font-['Arial_Nova:Bold',sans-serif] leading-[24px] text-[18px] text-[#0077ac]">Channels & Deliverables</p>
+      <div className={styles.deliverablesSection}>
+        <p className={styles.sectionTitle}>Channels & Deliverables</p>
 
         {planData.workstreams.map((ws: any, wsIdx: number) => (
-          <div key={wsIdx} className="border border-[#b5bdc3] flex flex-col gap-[8px] items-start justify-center pl-[12px] pr-[8px] py-[8px] rounded-[16px] w-full">
+          <div key={wsIdx} className={styles.workstreamCard}>
 
             {/* Workstream header */}
-            <div className="flex gap-[8px] items-center w-full">
-              <div className="flex flex-1 gap-[8px] items-center min-w-0">
-                <p className="font-['Arial_Nova:Bold',sans-serif] leading-[20px] text-[16px] text-[#0c2737] whitespace-nowrap">{ws.title}</p>
-                <div className="flex gap-[4px] items-center shrink-0">
-                  <div className="bg-[#e1f5ff] flex items-center justify-center px-[8px] py-[4px] rounded-[32px]">
-                    <p className="font-['Arial_Nova:Regular',sans-serif] leading-[14px] text-[12px] text-[#0077ac] whitespace-nowrap">
+            <div className={styles.workstreamHeader}>
+              <div className={styles.workstreamHeaderLeft}>
+                <p className={styles.workstreamTitle}>{ws.title}</p>
+                <div style={{ display: 'flex', gap: '4px', alignItems: 'center', flexShrink: 0 }}>
+                  <div className={styles.countPill}>
+                    <p className={styles.countPillLabel}>
                       {ws.deliverables.length} Deliverable{ws.deliverables.length !== 1 ? "s" : ""}
                     </p>
                   </div>
                   <button
                     onClick={() => startNewDel(wsIdx)}
-                    className="bg-[#e1f5ff] hover:bg-[#cceeff] flex items-center justify-center p-[4px] rounded-[32px] transition-colors"
+                    className={styles.addButton}
                   >
-                    <div className="relative shrink-0 size-[15px]">
-                      <div className="absolute inset-[15%]"><PlusIcon color="#0077ac" /></div>
+                    <div className={styles.addButtonIcon}>
+                      <div className={styles.addButtonIconInset}><PlusIcon color="#0077ac" /></div>
                     </div>
                   </button>
                 </div>
               </div>
-              <div className="bg-[#f8f9fb] flex items-center justify-center px-[8px] py-[4px] rounded-[32px] shrink-0">
-                <p className="font-['Arial_Nova:Regular',sans-serif] leading-[14px] text-[12px] text-[#0c2737] whitespace-nowrap">
+              <div className={styles.routedPill}>
+                <p className={styles.routedPillLabel}>
                   Routed to {ws.routedTo}
                 </p>
               </div>
@@ -240,23 +235,23 @@ export function ProjectPlan({ briefData, planData, onUpdateBrief, onUpdatePlan, 
 
               if (isEditing) {
                 return (
-                  <div key={dIdx} className="flex gap-[8px] items-center w-full">
-                    <div className="relative shrink-0 size-[15px]">
-                      <div className="absolute inset-[5.85%]"><CircleBullet /></div>
+                  <div key={dIdx} className={styles.deliverableRow}>
+                    <div className={styles.bulletIcon}>
+                      <div className={styles.bulletIconInset}><CircleBullet /></div>
                     </div>
-                    <div className="bg-white border border-[#b5bdc3] flex flex-1 gap-[8px] items-center px-[12px] py-[8px] rounded-[8px] min-w-0">
+                    <div className={styles.editInputWrapper}>
                       <input
                         autoFocus
-                        className="flex-1 font-['Arial_Nova:Regular',sans-serif] leading-[18px] text-[#0c2737] text-[14px] min-w-0 bg-transparent border-none outline-none"
+                        className={styles.editInput}
                         value={editingDelValue}
                         onChange={(e) => setEditingDelValue(e.target.value)}
                         onKeyDown={(e) => { if (e.key === "Enter") saveDel(wsIdx, dIdx); if (e.key === "Escape") setEditingDel(null); }}
                       />
-                      <button onClick={() => saveDel(wsIdx, dIdx)} className="shrink-0 flex items-center justify-center cursor-pointer">
+                      <button onClick={() => saveDel(wsIdx, dIdx)} className={styles.actionButton}>
                         <SaveIcon />
                       </button>
                     </div>
-                    <button onClick={() => deleteDel(wsIdx, dIdx)} className="shrink-0 flex items-center justify-center cursor-pointer">
+                    <button onClick={() => deleteDel(wsIdx, dIdx)} className={styles.actionButton}>
                       <TrashIcon />
                     </button>
                   </div>
@@ -266,18 +261,18 @@ export function ProjectPlan({ briefData, planData, onUpdateBrief, onUpdatePlan, 
               return (
                 <div
                   key={dIdx}
-                  className="flex gap-[8px] items-center w-full"
+                  className={styles.deliverableRow}
                   onMouseEnter={() => setHoveredDel({ wsIdx, delIdx: dIdx })}
                   onMouseLeave={() => setHoveredDel(null)}
                 >
-                  <div className="relative shrink-0 size-[15px]">
-                    <div className="absolute inset-[5.85%]"><CircleBullet /></div>
+                  <div className={styles.bulletIcon}>
+                    <div className={styles.bulletIconInset}><CircleBullet /></div>
                   </div>
-                  <p className="font-['Arial_Nova:Regular',sans-serif] leading-[18px] text-[14px] text-[#0c2737] flex-1">{del.name}</p>
+                  <p className={styles.deliverableText}>{del.name}</p>
                   {isHovered && (
                     <button
                       onClick={() => startEditDel(wsIdx, dIdx, del.name)}
-                      className="shrink-0 flex items-center justify-center cursor-pointer opacity-70 hover:opacity-100 transition-opacity"
+                      className={styles.pencilButton}
                     >
                       <PencilIcon />
                     </button>
@@ -288,42 +283,42 @@ export function ProjectPlan({ briefData, planData, onUpdateBrief, onUpdatePlan, 
 
             {/* New deliverable input */}
             {newDel?.wsIdx === wsIdx && (
-              <div className="flex gap-[8px] items-center w-full">
-                <div className="relative shrink-0 size-[15px]">
-                  <div className="absolute inset-[5.85%]"><CircleBullet /></div>
+              <div className={styles.deliverableRow}>
+                <div className={styles.bulletIcon}>
+                  <div className={styles.bulletIconInset}><CircleBullet /></div>
                 </div>
-                <div className="bg-white border border-[#b5bdc3] flex flex-1 gap-[8px] items-center px-[12px] py-[8px] rounded-[8px] min-w-0">
+                <div className={styles.editInputWrapper}>
                   <input
                     autoFocus
-                    className="flex-1 font-['Arial_Nova:Regular',sans-serif] leading-[18px] text-[#0c2737] text-[14px] min-w-0 bg-transparent border-none outline-none placeholder:text-[#b5bdc3]"
+                    className={styles.editInput}
                     value={newDelValue}
                     onChange={(e) => setNewDelValue(e.target.value)}
                     placeholder="New deliverable"
                     onKeyDown={(e) => { if (e.key === "Enter") saveNewDel(wsIdx); if (e.key === "Escape") setNewDel(null); }}
                   />
-                  <button onClick={() => saveNewDel(wsIdx)} className="shrink-0 flex items-center justify-center cursor-pointer">
+                  <button onClick={() => saveNewDel(wsIdx)} className={styles.actionButton}>
                     <SaveIcon />
                   </button>
                 </div>
-                <button onClick={() => setNewDel(null)} className="shrink-0 flex items-center justify-center cursor-pointer">
+                <button onClick={() => setNewDel(null)} className={styles.actionButton}>
                   <TrashIcon />
                 </button>
               </div>
             )}
 
             {/* Footer */}
-            <div className="flex items-end py-[8px] w-full gap-[16px]">
+            <div className={styles.footer}>
               {/* Timeline */}
               {editingFooter?.wsIdx === wsIdx && editingFooter?.field === "timeline" ? (
-                <div className="flex flex-col gap-[4px] flex-1 min-w-0">
-                  <p className="font-['Arial_Nova:Regular',sans-serif] leading-[14px] text-[#72797e] text-[12px]">Due Date</p>
-                  <div className="bg-white border border-[#b5bdc3] flex gap-[4px] items-center px-[12px] py-[8px] rounded-[8px]">
-                    <div className="relative shrink-0 size-[15px] mr-1">
-                      <Calendar size={14} className="text-gray-500" />
+                <div className={styles.footerFieldWrapper}>
+                  <p className={styles.footerFieldLabel}>Due Date</p>
+                  <div className={styles.footerInputBox}>
+                    <div style={{ position: 'relative', flexShrink: 0, width: '15px', height: '15px', marginRight: '4px' }}>
+                      <Calendar size={14} style={{ color: '#6b7280' }} />
                     </div>
                     <input
                       autoFocus
-                      className="flex-1 font-['Arial_Nova:Regular',sans-serif] leading-[18px] text-[#0c2737] text-[14px] min-w-0 bg-transparent border-none outline-none"
+                      className={styles.footerInput}
                       value={editingFooterValue}
                       onChange={(e) => setEditingFooterValue(e.target.value)}
                       onKeyDown={(e) => { if (e.key === "Enter") saveFooter(wsIdx, "timeline"); if (e.key === "Escape") setEditingFooter(null); }}
@@ -333,7 +328,7 @@ export function ProjectPlan({ briefData, planData, onUpdateBrief, onUpdatePlan, 
                 </div>
               ) : (
                 <p
-                  className="flex-1 font-['Arial_Nova:Regular',sans-serif] leading-[14px] text-[#72797e] text-[12px] cursor-pointer hover:text-[#0077ac] transition-colors"
+                  className={styles.footerText}
                   onClick={() => startEditFooter(wsIdx, "timeline", ws.timeline)}
                 >
                   {ws.timeline}
@@ -342,10 +337,10 @@ export function ProjectPlan({ briefData, planData, onUpdateBrief, onUpdatePlan, 
 
               {/* Approver */}
               {editingFooter?.wsIdx === wsIdx && editingFooter?.field === "approver" ? (
-                <div className="flex-1 min-w-0">
+                <div style={{ flex: 1, minWidth: 0 }}>
                   <input
                     autoFocus
-                    className="w-full font-['Arial_Nova:Regular',sans-serif] leading-[14px] text-[#72797e] text-[12px] bg-transparent border-b border-[#b5bdc3] outline-none pb-[2px]"
+                    className={styles.footerUnderlineInput}
                     value={editingFooterValue}
                     onChange={(e) => setEditingFooterValue(e.target.value)}
                     onKeyDown={(e) => { if (e.key === "Enter") saveFooter(wsIdx, "approver"); if (e.key === "Escape") setEditingFooter(null); }}
@@ -354,7 +349,7 @@ export function ProjectPlan({ briefData, planData, onUpdateBrief, onUpdatePlan, 
                 </div>
               ) : (
                 <p
-                  className="flex-1 font-['Arial_Nova:Regular',sans-serif] leading-[14px] text-[#72797e] text-[12px] cursor-pointer hover:text-[#0077ac] transition-colors"
+                  className={styles.footerText}
                   onClick={() => startEditFooter(wsIdx, "approver", ws.approver)}
                 >
                   Approver: {ws.approver}

@@ -1,0 +1,309 @@
+.container {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  border: 1px solid #e5e7eb;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  overflow-y: auto;
+}
+
+.topRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  flex-shrink: 0;
+}
+
+.statusLabel {
+  color: #48801c;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.titleEditRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.titleInput {
+  border: 1px solid #7dd3fc;
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-family: 'Arial Nova:Bold', sans-serif;
+  font-size: 20px;
+  line-height: 24px;
+  color: #0c2737;
+  outline: none;
+  width: 400px;
+}
+
+.title {
+  font-family: 'Arial Nova:Bold', sans-serif;
+  line-height: 24px;
+  font-size: 20px;
+  color: #0c2737;
+}
+
+.approveButton {
+  background-color: #48801c;
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+  flex-shrink: 0;
+}
+
+.approveButton:hover {
+  background-color: #3d6e17;
+}
+
+.approveLabel {
+  font-family: 'Arial Nova:Regular', sans-serif;
+  line-height: 14px;
+  font-size: 12px;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.metaGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-bottom: 32px;
+  flex-shrink: 0;
+}
+
+.metaField {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.metaLabel {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.metaSelectWrapper {
+  position: relative;
+}
+
+.metaSelect {
+  width: 100%;
+  appearance: none;
+  background-color: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 8px 36px 8px 8px;
+  font-size: 14px;
+  color: #0c2737;
+  outline: none;
+}
+
+.selectChevron {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6b7280;
+  pointer-events: none;
+}
+
+.dateWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: white;
+  overflow: hidden;
+}
+
+.dateIcon {
+  position: absolute;
+  left: 8px;
+  color: #6b7280;
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+.dateField {
+  width: 100%;
+  border: none;
+  outline: none;
+  padding: 8px 8px 8px 28px;
+  font-size: 14px;
+  color: #0c2737;
+  background: transparent;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.dateField::-webkit-calendar-picker-indicator {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.wbsInput {
+  border-radius: 6px;
+  padding: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 150ms ease, background-color 150ms ease;
+  border: 1px solid #d1d5db;
+  background-color: #fff;
+  color: #0c2737;
+}
+
+.wbsInputHighlight {
+  background-color: #dcf2fe;
+  border-color: #7dd3fc;
+  color: #0077ac;
+}
+
+.wbsInputHighlight::placeholder {
+  color: #0077ac;
+}
+
+.channelSelectorWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-start;
+  flex-shrink: 0;
+}
+
+.channelSelectorLabel {
+  font-family: 'Arial Nova:Regular', sans-serif;
+  line-height: 14px;
+  font-style: normal;
+  color: #72797e;
+  font-size: 12px;
+}
+
+.channelPills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.channelPill {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 8px;
+  border-radius: 32px;
+  flex-shrink: 0;
+  cursor: pointer;
+  border: none;
+  transition: background-color 150ms ease;
+}
+
+.channelPillActive {
+  background-color: #008ac0;
+}
+
+.channelPillInactive {
+  background-color: #f8f9fb;
+}
+
+.channelPillInactive:hover {
+  background-color: #edf6fb;
+}
+
+.channelPillLabel {
+  font-family: 'Arial Nova:Regular', sans-serif;
+  line-height: 14px;
+  font-style: normal;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.channelPillLabelActive { color: #fff; }
+.channelPillLabelInactive { color: #72797e; }
+
+.channelPillIcon {
+  position: relative;
+  flex-shrink: 0;
+  width: 15px;
+  height: 15px;
+}
+
+.channelPillIconActive {
+  position: absolute;
+  inset: 24% 22% 24% 23%;
+}
+
+.channelPillIconInactive {
+  position: absolute;
+  inset: 15%;
+}
+
+.sectionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  flex: 1;
+  flex-shrink: 0;
+}
+
+.editSection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.editSectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.editSectionLabel {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.editTextarea {
+  width: 100%;
+  border: 1px solid #7dd3fc;
+  border-radius: 6px;
+  padding: 12px;
+  font-size: 14px;
+  color: #0c2737;
+  resize: none;
+  outline: none;
+  line-height: 1.6;
+  min-height: 80px;
+  font-family: inherit;
+}
+
+.editBody {
+  font-size: 14px;
+  color: #0c2737;
+  line-height: 1.6;
+}
+
+.editParagraph {
+  margin-bottom: 16px;
+}
+
+.editParagraph:last-child {
+  margin-bottom: 0;
+}

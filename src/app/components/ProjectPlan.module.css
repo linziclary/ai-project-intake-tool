@@ -1,0 +1,433 @@
+.container {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.08), 8px 8px 16px 0px rgba(0,0,0,0.12);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 40px;
+  overflow-y: auto;
+  gap: 24px;
+}
+
+.planHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  flex-shrink: 0;
+  width: 100%;
+}
+
+.planHeaderLeft {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.planSubtitle {
+  font-family: 'Arial Nova:Regular', sans-serif;
+  line-height: 18px;
+  color: #0077ac;
+  font-size: 14px;
+}
+
+.planTitle {
+  font-family: 'Arial Nova:Bold', sans-serif;
+  line-height: 24px;
+  font-size: 20px;
+  color: #0c2737;
+  letter-spacing: -0.1px;
+  white-space: nowrap;
+}
+
+.planHeaderRight {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  flex-shrink: 0;
+}
+
+.iconButton {
+  border: 1px solid #48801c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 8px;
+  width: 31px;
+  height: 31px;
+  background: none;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+
+.iconButton:hover {
+  background-color: #f9fafb;
+}
+
+.approveButton {
+  background-color: #48801c;
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+
+.approveButton:hover {
+  background-color: #3d6e17;
+}
+
+.approveLabel {
+  font-family: 'Arial Nova:Regular', sans-serif;
+  line-height: 14px;
+  font-size: 12px;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.iconRef {
+  position: relative;
+  width: 15px;
+  height: 15px;
+}
+
+.iconAbsolute {
+  position: absolute;
+  inset: 5.85%;
+}
+
+.metaRow {
+  display: flex;
+  gap: 4px;
+  align-items: flex-start;
+  flex-shrink: 0;
+  width: 100%;
+}
+
+.metaCol {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-start;
+  width: 202px;
+}
+
+.metaText {
+  font-family: 'Arial Nova:Regular', sans-serif;
+  line-height: 18px;
+  color: #0c2737;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.channelsWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-start;
+  flex-shrink: 0;
+}
+
+.channelsLabel {
+  font-family: 'Arial Nova:Regular', sans-serif;
+  line-height: 14px;
+  color: #72797e;
+  font-size: 12px;
+}
+
+.channelPills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.channelPill {
+  background-color: #e1f5ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 8px;
+  border-radius: 32px;
+  flex-shrink: 0;
+}
+
+.channelPillLabel {
+  font-family: 'Arial Nova:Regular', sans-serif;
+  line-height: 14px;
+  font-size: 12px;
+  color: #0077ac;
+  white-space: nowrap;
+}
+
+.deliverablesSection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;
+  width: 100%;
+}
+
+.sectionTitle {
+  font-family: 'Arial Nova:Bold', sans-serif;
+  line-height: 24px;
+  font-size: 18px;
+  color: #0077ac;
+}
+
+.workstreamCard {
+  border: 1px solid #b5bdc3;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 8px 8px 8px 12px;
+  border-radius: 16px;
+  width: 100%;
+}
+
+.workstreamHeader {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  width: 100%;
+}
+
+.workstreamHeaderLeft {
+  display: flex;
+  flex: 1;
+  gap: 8px;
+  align-items: center;
+  min-width: 0;
+}
+
+.workstreamTitle {
+  font-family: 'Arial Nova:Bold', sans-serif;
+  line-height: 20px;
+  font-size: 16px;
+  color: #0c2737;
+  white-space: nowrap;
+}
+
+.countPill {
+  background-color: #e1f5ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 8px;
+  border-radius: 32px;
+}
+
+.countPillLabel {
+  font-family: 'Arial Nova:Regular', sans-serif;
+  line-height: 14px;
+  font-size: 12px;
+  color: #0077ac;
+  white-space: nowrap;
+}
+
+.addButton {
+  background-color: #e1f5ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: 32px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+
+.addButton:hover {
+  background-color: #cceeff;
+}
+
+.addButtonIcon {
+  position: relative;
+  flex-shrink: 0;
+  width: 15px;
+  height: 15px;
+}
+
+.addButtonIconInset {
+  position: absolute;
+  inset: 15%;
+}
+
+.routedPill {
+  background-color: #f8f9fb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 8px;
+  border-radius: 32px;
+  flex-shrink: 0;
+}
+
+.routedPillLabel {
+  font-family: 'Arial Nova:Regular', sans-serif;
+  line-height: 14px;
+  font-size: 12px;
+  color: #0c2737;
+  white-space: nowrap;
+}
+
+.deliverableRow {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  width: 100%;
+}
+
+.bulletIcon {
+  position: relative;
+  flex-shrink: 0;
+  width: 15px;
+  height: 15px;
+}
+
+.bulletIconInset {
+  position: absolute;
+  inset: 5.85%;
+}
+
+.deliverableText {
+  font-family: 'Arial Nova:Regular', sans-serif;
+  line-height: 18px;
+  font-size: 14px;
+  color: #0c2737;
+  flex: 1;
+}
+
+.pencilButton {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0.7;
+  background: none;
+  border: none;
+  transition: opacity 150ms ease;
+}
+
+.pencilButton:hover {
+  opacity: 1;
+}
+
+.editInputWrapper {
+  background-color: #fff;
+  border: 1px solid #b5bdc3;
+  display: flex;
+  flex: 1;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 8px;
+  min-width: 0;
+}
+
+.editInput {
+  flex: 1;
+  font-family: 'Arial Nova:Regular', sans-serif;
+  line-height: 18px;
+  color: #0c2737;
+  font-size: 14px;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+.editInput::placeholder {
+  color: #b5bdc3;
+}
+
+.actionButton {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.footer {
+  display: flex;
+  align-items: flex-end;
+  padding: 8px 0;
+  width: 100%;
+  gap: 16px;
+}
+
+.footerFieldWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+.footerFieldLabel {
+  font-family: 'Arial Nova:Regular', sans-serif;
+  line-height: 14px;
+  color: #72797e;
+  font-size: 12px;
+}
+
+.footerInputBox {
+  background-color: #fff;
+  border: 1px solid #b5bdc3;
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+
+.footerInput {
+  flex: 1;
+  font-family: 'Arial Nova:Regular', sans-serif;
+  line-height: 18px;
+  color: #0c2737;
+  font-size: 14px;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+.footerText {
+  flex: 1;
+  font-family: 'Arial Nova:Regular', sans-serif;
+  line-height: 14px;
+  color: #72797e;
+  font-size: 12px;
+  cursor: pointer;
+  transition: color 150ms ease;
+}
+
+.footerText:hover {
+  color: #0077ac;
+}
+
+.footerUnderlineInput {
+  width: 100%;
+  font-family: 'Arial Nova:Regular', sans-serif;
+  line-height: 14px;
+  color: #72797e;
+  font-size: 12px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #b5bdc3;
+  outline: none;
+  padding-bottom: 2px;
+}
