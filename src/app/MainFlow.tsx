@@ -6,6 +6,7 @@ import { ChatMessage } from "./components/ChatMessage";
 import { StrategicBrief } from "./components/StrategicBrief";
 import { ProjectPlan } from "./components/ProjectPlan";
 import { SuccessView } from "./components/SuccessView";
+import { PlanReviewView } from "./components/PlanReviewView";
 import { ChatHistorySidebar } from "./components/ChatHistorySidebar";
 import styles from "./MainFlow.module.css";
 
@@ -33,9 +34,10 @@ export default function MainFlow() {
     dueDate: "August 1, 2026",
     wbsCode: "",
     description: "This project aims to develop a strategy brief that outlines key objectives, target audience, and actionable steps for implementation. The brief will serve as a roadmap for stakeholders to align on vision and execution.",
-    desiredOutcomes: "The purpose of this strategy brief is to establish a clear framework for the development of a user-friendly web page that enhances user engagement and accessibility.\n\nProblems to Solve: Current web pages lack intuitive navigation and fail to meet the diverse needs of users, leading to high bounce rates and low satisfaction. Additionally, there is a need for improved mobile responsiveness and faster load times.\n\nGoal: The goal is to create a web page that not only captivates users but also provides seamless access to information, ultimately increasing user retention and satisfaction.",
+    goal: "Create a web page that captivates users and provides seamless access to information.",
+    desiredOutcomes: "The purpose of this strategy brief is to establish a clear framework for the development of a user-friendly web page.\n\nProblems to Solve: Current web pages lack intuitive navigation and fail to meet diverse user needs.",
     scopeDeliverables: "The project will cover all of the content strategy documents, SEO, and UX design files needed for a web page. It will also cover the development deliverables needed for this web page to be implemented and launched.",
-    targetAudience: "This web page targets eco-conscious homeowners and businesses through platforms like Google, Facebook, and industry blogs, using targeted ads and informative content to promote renewable energy solutions."
+    targetAudience: "This web page targets eco-conscious homeowners and businesses through Google, Facebook, and industry blogs."
   };
 
   const initialPlanData = {
@@ -86,6 +88,7 @@ export default function MainFlow() {
 
   const [briefData, setBriefData] = useState(initialBriefData);
   const [planData, setPlanData] = useState(initialPlanData);
+  const [showReview, setShowReview] = useState(false);
 
   const handleReset = () => {
     setStep(0);
@@ -117,21 +120,21 @@ export default function MainFlow() {
       let aiResponseText = "";
 
       if (step === 0) {
-        aiResponseText = "Sounds great! To help me get started with the strategic brief can you answer a couple more questions about this project for me.\n\nIs this project new or an update?\nWhat problem are you solving for?\nDo you have a WBS code or budget allocated?";
+        aiResponseText = "Sounds great!\n\nTo help me get started with the strategic brief can you answer a couple more questions about this project for me.\n\nIs this project new or an update?\nWhat problem are you solving for?\nDo you have a WBS code or budget allocated?";
         setStep(1);
       } else if (step === 1) {
-        aiResponseText = "Here's a first pass of the Strategic Brief document for this project. Review the draft and update anything you'd like in the sections to the left. The sections I was not able to draft are highlighted, please fill those out as well or give me additional info so I can draft content.";
+        aiResponseText = "Here's a first pass of the Strategic Brief.\n\nReview the draft and update anything you'd like in the sections to the left. The sections I was not able to draft are highlighted, please fill those out as well or give me additional info so I can draft content.";
         setStep(2);
       } else if (step === 2) {
         setBriefData(prev => ({ ...prev, wbsCode: "RE2026-06" }));
-        aiResponseText = "Great! I've approved the Strategic Brief, can confirm the project details and we can move onto the Project Plan.\n\nHere's a draft of the Project Plan, please review this draft and let me know if we need to revise or edit.";
+        aiResponseText = "Great! I've approved the Strategic Brief\n\nPlease confirm the project details and we can move onto the Project Plan.\n\nReview this draft content\nLet me know what you'd like to update";
         setStep(3);
         setIsGeneratingPlan(false);
       } else if (step === 3) {
         const newPlanData = JSON.parse(JSON.stringify(planData));
         newPlanData.workstreams[3].deliverables.splice(2, 0, { name: "Staging Content Approval", completed: false });
         setPlanData(newPlanData);
-        aiResponseText = "Nice addition. I've added that deliverable to the list, once you think this plan is ready to go I can route the work to each team directly.";
+        aiResponseText = "Nice addition.\n\nI've added that deliverable to the list, once you think this plan is ready to go I can route the work to each team directly.";
         setStep(4);
       }
 
@@ -160,7 +163,7 @@ export default function MainFlow() {
     }, 2000);
   };
 
-  const documentType = isRoutingData ? "routing" : isGeneratingPlan ? "generating" : step >= 5 ? "success" : step >= 3 ? "plan" : step >= 2 ? "brief" : "none";
+  const documentType = isRoutingData ? "routing" : isGeneratingPlan ? "generating" : step >= 5 ? "success" : showReview ? "review" : step >= 3 ? "plan" : step >= 2 ? "brief" : "none";
 
   const progressStep = messages.length === 0 ? 0
     : step <= 1 ? 1
@@ -188,7 +191,7 @@ export default function MainFlow() {
           {documentType !== 'none' && (
             <div className={clsx(
               styles.documentPanel,
-              (documentType === 'success' || documentType === 'routing') && styles.documentPanelFull
+              (documentType === 'success' || documentType === 'routing' || documentType === 'review') && styles.documentPanelFull
             )}>
               {documentType === 'brief' && (
                 <StrategicBrief
@@ -213,12 +216,13 @@ export default function MainFlow() {
                   </div>
                 </div>
               )}
-              {documentType === 'plan' && <ProjectPlan briefData={briefData} planData={planData} onUpdateBrief={setBriefData} onUpdatePlan={setPlanData} onBackToBrief={() => setStep(2)} onApprove={handleApprovePlan} />}
+              {documentType === 'plan' && <ProjectPlan briefData={briefData} planData={planData} onUpdateBrief={setBriefData} onUpdatePlan={setPlanData} onBackToBrief={() => setStep(2)} onApprove={handleApprovePlan} onViewReview={() => setShowReview(true)} />}
+              {documentType === 'review' && <PlanReviewView briefData={briefData} planData={planData} onBackToDraft={() => setShowReview(false)} />}
               {documentType === 'success' && <SuccessView briefData={briefData} planData={planData} />}
             </div>
           )}
 
-          {documentType !== 'success' && documentType !== 'routing' && (
+          {documentType !== 'success' && documentType !== 'routing' && documentType !== 'review' && (
             <div className={clsx(
               styles.chatColumn,
               documentType !== 'none' ? styles.chatColumnNarrow : styles.chatColumnWide,

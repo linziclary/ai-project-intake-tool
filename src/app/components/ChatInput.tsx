@@ -44,15 +44,10 @@ export function ChatInput({ onSend, placeholder, compact, hasMessages }: ChatInp
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           {isInitialState && showAttachment && (
             <div className={styles.attachmentChip}>
-              <div style={{ position: 'relative', flexShrink: 0, width: '15px', height: '15px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <svg style={{ display: 'block', width: '11px', height: '11px' }} fill="none" viewBox="0 0 11 13">
-                  <path d={svgPaths.p2b6ee200} fill="#72797E" />
-                </svg>
-              </div>
               <span className={styles.attachmentLabel}>Filename.pdf</span>
               <div className={styles.removeAttachment} onClick={() => setShowAttachment(false)}>
                 <svg style={{ display: 'block', width: '9px', height: '9px' }} fill="none" viewBox="0 0 9 9">
-                  <path d={svgPaths.p8711b00} fill="#72797E" />
+                  <path d={svgPaths.p8711b00} fill="#0c2737" />
                 </svg>
               </div>
             </div>
@@ -66,7 +61,7 @@ export function ChatInput({ onSend, placeholder, compact, hasMessages }: ChatInp
           >
             <div style={{ position: 'relative', width: '15px', height: '15px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <svg style={{ display: 'block', width: '10.5px', height: '10.5px' }} fill="none" viewBox="0 0 10.5 10.5">
-                <path d={svgPaths.p11333d80} fill="#72797E" />
+                <path d={svgPaths.p11333d80} fill="#48801c" />
               </svg>
             </div>
           </button>

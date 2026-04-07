@@ -99,26 +99,26 @@ const EditableTextSection = ({
 
   return (
     <div className={styles.editSection}>
-      <div className={styles.editSectionHeader}>
-        <label className={styles.editSectionLabel}>{label}</label>
+      <label className={styles.editSectionLabel}>{label}</label>
+      <div className={clsx(styles.editBox, editing && styles.editBoxActive)}>
         {editing ? (
-          <CheckCircle size={14} style={{ color: '#008AC0', cursor: 'pointer' }} onClick={handleSave} />
+          <textarea
+            autoFocus
+            className={styles.editTextarea}
+            value={tempVal}
+            onChange={(e) => setTempVal(e.target.value)}
+          />
         ) : (
-          <Edit3 size={14} style={{ color: '#008AC0', cursor: 'pointer' }} onClick={() => setEditing(true)} />
+          <div className={styles.editBody}>
+            {renderText ? renderText(value) : <p style={{ whiteSpace: 'pre-wrap' }}>{value}</p>}
+          </div>
+        )}
+        {editing ? (
+          <CheckCircle size={15} style={{ color: '#008AC0', cursor: 'pointer', flexShrink: 0 }} onClick={handleSave} />
+        ) : (
+          <Edit3 size={15} style={{ color: '#008AC0', cursor: 'pointer', flexShrink: 0 }} onClick={() => setEditing(true)} />
         )}
       </div>
-      {editing ? (
-        <textarea
-          autoFocus
-          className={styles.editTextarea}
-          value={tempVal}
-          onChange={(e) => setTempVal(e.target.value)}
-        />
-      ) : (
-        <div className={styles.editBody}>
-          {renderText ? renderText(value) : <p style={{ whiteSpace: 'pre-wrap' }}>{value}</p>}
-        </div>
-      )}
     </div>
   );
 };
@@ -160,7 +160,6 @@ export function StrategicBrief({ data, onUpdate, onApprove }: StrategicBriefProp
 
       <div className={styles.topRow}>
         <div>
-          <p className={styles.statusLabel}>Strategic Brief Draft</p>
           <EditableTitle value={data.title || "Renew Energy Promotion Web Page"} onSave={(val) => onUpdate({ ...data, title: val })} />
         </div>
         <button
@@ -217,8 +216,6 @@ export function StrategicBrief({ data, onUpdate, onApprove }: StrategicBriefProp
             <ChevronDown size={16} className={styles.selectChevron} />
           </div>
         </div>
-        <div className={styles.metaField} />
-
         <div className={styles.metaField}>
           <label className={styles.metaLabel}>Priority</label>
           <div className={styles.metaSelectWrapper}>
@@ -270,6 +267,12 @@ export function StrategicBrief({ data, onUpdate, onApprove }: StrategicBriefProp
           label="Description"
           value={data.description}
           onSave={(val) => onUpdate({ ...data, description: val })}
+        />
+
+        <EditableTextSection
+          label="Goal"
+          value={data.goal}
+          onSave={(val) => onUpdate({ ...data, goal: val })}
         />
 
         <EditableTextSection

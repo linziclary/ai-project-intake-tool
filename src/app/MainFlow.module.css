@@ -91,15 +91,20 @@
 }
 
 .generatingTitle {
-  color: #0c2737;
-  font-weight: bold;
+  font-family: 'Arial Nova:Bold', sans-serif;
   font-size: 20px;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: -0.1px;
+  color: #0c2737;
   margin-bottom: 8px;
 }
 
 .generatingSubtitle {
-  color: #6b7280;
+  font-family: 'Arial Nova:Regular', sans-serif;
   font-size: 14px;
+  line-height: 18px;
+  color: #0c2737;
 }
 
 .routingPanel {
@@ -138,15 +143,20 @@
 }
 
 .routingTitle {
-  color: #0c2737;
-  font-weight: bold;
+  font-family: 'Arial Nova:Bold', sans-serif;
   font-size: 20px;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: -0.1px;
+  color: #0c2737;
   margin-bottom: 8px;
 }
 
 .routingSubtitle {
-  color: #6b7280;
+  font-family: 'Arial Nova:Regular', sans-serif;
   font-size: 14px;
+  line-height: 18px;
+  color: #0c2737;
 }
 
 .chatColumn {
@@ -204,10 +214,11 @@
 .typingIndicator {
   display: flex;
   align-items: center;
+  font-family: 'Arial Nova:Regular', sans-serif;
+  font-size: 14px;
+  line-height: 18px;
   color: #0c2737;
-  font-size: 15px;
   padding: 16px;
-  font-weight: 500;
   opacity: 0.5;
 }
 

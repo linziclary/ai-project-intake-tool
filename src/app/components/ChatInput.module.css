@@ -7,9 +7,9 @@
   width: 100%;
   flex-shrink: 0;
   box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.08), 8px 8px 16px 0px rgba(0,0,0,0.12);
-  border: 1px solid #b5bdc3;
+  border: 1px solid var(--border);
   transition: all 300ms ease;
-  border-radius: 16px;
+  border-radius: 12px;
 }
 
 .wrapperInitial {
@@ -46,11 +46,11 @@
 }
 
 .textareaInitial {
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .textareaCompact {
-  font-size: 15px;
+  font-size: 14px;
 }
 
 .footer {
@@ -62,20 +62,19 @@
 }
 
 .attachmentChip {
-  background-color: #fff;
-  border: 1px solid #b5bdc3;
-  border-radius: 16px;
+  background-color: #e6e9eb;
+  border-radius: 32px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px;
+  gap: 4px;
+  padding: 4px 8px;
 }
 
 .attachmentLabel {
-  color: #72797e;
-  font-size: 14px;
+  color: #0c2737;
+  font-size: 12px;
   white-space: nowrap;
-  line-height: 1;
+  line-height: 14px;
   font-family: 'Arial Nova:Regular', sans-serif;
 }
 
@@ -97,31 +96,31 @@
 .buttonGroup {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .iconButton {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
+  border-radius: 24px;
   width: 32px;
   height: 32px;
-  border: 1px solid #b5bdc3;
-  background-color: #fff;
+  border: 1px solid var(--btn-default);
+  background-color: transparent;
   cursor: pointer;
   transition: background-color 150ms ease;
 }
 
 .iconButton:hover {
-  background-color: #f9fafb;
+  background-color: #f0f9eb;
 }
 
 .sendButton {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
+  border-radius: 24px;
   width: 32px;
   height: 32px;
   border: none;
@@ -131,5 +130,5 @@
 }
 
 .sendButton:hover {
-  background-color: #3d6e17;
+  background-color: var(--btn-hover);
 }

@@ -5,13 +5,13 @@
 }
 
 .userBubble {
-  background-color: #e4e8ea;
+  background-color: #e6e9eb;
   color: #0c2737;
-  border-radius: 20px;
-  padding: 16px 20px;
+  border-radius: 14px;
+  padding: 10px 14px;
   max-width: 90%;
-  font-size: 15px;
-  line-height: 22px;
+  font-size: 14px;
+  line-height: 18px;
   font-family: 'Arial Nova:Regular', sans-serif;
 }
 
@@ -19,14 +19,47 @@
   display: flex;
   width: 100%;
   justify-content: flex-start;
+  padding: 4px 0;
 }
 
 .aiText {
   color: #0c2737;
-  padding: 8px;
   width: 100%;
-  font-size: 15px;
-  line-height: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* bold small — 14px bold — opening title line */
+.titleLine {
+  font-family: 'Arial Nova:Bold', sans-serif;
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 700;
+  color: #0c2737;
+}
+
+/* small — 14px regular — body text */
+.bodyLine {
   font-family: 'Arial Nova:Regular', sans-serif;
-  white-space: pre-wrap;
+  font-size: 14px;
+  line-height: 18px;
+  color: #0c2737;
+}
+
+/* bullet list for questions / list items */
+.bulletList {
+  list-style: disc;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+}
+
+.bulletList li {
+  font-family: 'Arial Nova:Regular', sans-serif;
+  font-size: 14px;
+  line-height: 18px;
+  color: #0c2737;
 }

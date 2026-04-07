@@ -30,4 +30,7 @@ export default defineConfig({
     },
   },
   assetsInclude: ['**/*.svg', '**/*.csv'],
+  server: {
+    allowedHosts: ['localhost', 'nonmediative-madelene-unmeasurably.ngrok-free.dev'],
+  },
 })
