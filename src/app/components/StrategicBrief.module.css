@@ -90,9 +90,68 @@
   gap: 4px;
 }
 
+.metaLabelRow {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
 .metaLabel {
-  font-size: var(--font-size-small);
+  font-family: 'Arial Nova:Regular', sans-serif;
+  font-size: 12px;
+  line-height: 14px;
   color: var(--text-secondary);
+}
+
+.infoTooltipWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.infoIconButton {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  line-height: 0;
+  opacity: 0.7;
+  transition: opacity 100ms ease;
+}
+
+.infoIconButton:hover {
+  opacity: 1;
+}
+
+.tooltip {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 200;
+  background-color: #0c2737;
+  border-radius: 8px;
+  padding: 10px 12px;
+  width: 200px;
+  box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.08), 8px 8px 16px 0px rgba(0,0,0,0.12);
+  font-family: 'Arial Nova:Regular', sans-serif;
+  font-size: 12px;
+  line-height: 14px;
+  color: #fff;
+}
+
+.tooltipText {
+  font-family: 'Arial Nova:Regular', sans-serif;
+  font-size: 12px;
+  line-height: 14px;
+  color: #fff;
+}
+
+.tooltipText strong {
+  font-family: 'Arial:Bold', sans-serif;
+  font-weight: 700;
 }
 
 .metaSelectWrapper {

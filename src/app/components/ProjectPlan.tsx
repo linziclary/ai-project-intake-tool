@@ -140,6 +140,8 @@ export function ProjectPlan({ briefData, planData, onUpdateBrief: _onUpdateBrief
   const [editEndDate, setEditEndDate] = useState("");
   const [editingApproverIdx, setEditingApproverIdx] = useState<number | null>(null);
   const [editApproverValue, setEditApproverValue] = useState("");
+  const [hoveredDateIdx, setHoveredDateIdx] = useState<number | null>(null);
+  const [hoveredApproverIdx, setHoveredApproverIdx] = useState<number | null>(null);
 
   const saveDel = (wsIdx: number, delIdx: number) => {
     const updated = JSON.parse(JSON.stringify(planData));
@@ -402,17 +404,25 @@ export function ProjectPlan({ briefData, planData, onUpdateBrief: _onUpdateBrief
                   </button>
                 </div>
               ) : (
-                <p
-                  className={styles.footerText}
-                  onClick={() => {
-                    setEditingDatesIdx(wsIdx);
-                    setEditStartDate(ws.startDate || '');
-                    setEditEndDate(ws.endDate || '');
-                    setEditingApproverIdx(null);
-                  }}
-                >
-                  {getDateRange(ws)}
-                </p>
+                <div style={{ flex: 1 }}>
+                  <div
+                    className={styles.footerHoverRow}
+                    style={{ width: 'fit-content' }}
+                    onMouseEnter={() => setHoveredDateIdx(wsIdx)}
+                    onMouseLeave={() => setHoveredDateIdx(null)}
+                    onClick={() => {
+                      setEditingDatesIdx(wsIdx);
+                      setEditStartDate(ws.startDate || '');
+                      setEditEndDate(ws.endDate || '');
+                      setEditingApproverIdx(null);
+                    }}
+                  >
+                    <p className={styles.footerText}>{getDateRange(ws)}</p>
+                    <div style={{ opacity: hoveredDateIdx === wsIdx ? 1 : 0, transition: 'opacity 150ms ease' }}>
+                      <Edit3 size={15} color="#008AC0" />
+                    </div>
+                  </div>
+                </div>
               )}
 
               {/* Right: approver / edit approver */}
@@ -437,17 +447,22 @@ export function ProjectPlan({ briefData, planData, onUpdateBrief: _onUpdateBrief
                   </button>
                 </div>
               ) : (
-                <p
-                  className={styles.footerText}
+                <div
+                  className={styles.footerHoverRow}
                   style={{ flex: 'none' }}
+                  onMouseEnter={() => setHoveredApproverIdx(wsIdx)}
+                  onMouseLeave={() => setHoveredApproverIdx(null)}
                   onClick={() => {
                     setEditingApproverIdx(wsIdx);
                     setEditApproverValue(ws.approver || '');
                     setEditingDatesIdx(null);
                   }}
                 >
-                  Approver {ws.approver}
-                </p>
+                  <p className={styles.footerText} style={{ flex: 'none' }}>Approver {ws.approver}</p>
+                  <div style={{ opacity: hoveredApproverIdx === wsIdx ? 1 : 0, transition: 'opacity 150ms ease' }}>
+                    <Edit3 size={15} color="#008AC0" />
+                  </div>
+                </div>
               )}
 
             </div>
