@@ -32,13 +32,13 @@
 }
 
 .titleInput {
-  border: 1px solid #7dd3fc;
+  border: 1px solid var(--border-focus);
   border-radius: 6px;
   padding: 4px 8px;
   font-family: 'Arial Nova:Bold', sans-serif;
-  font-size: 20px;
+  font-size: var(--font-size-h4);
   line-height: 24px;
-  color: #0c2737;
+  color: var(--text-primary);
   outline: none;
   width: 400px;
 }
@@ -65,7 +65,7 @@
 }
 
 .approveButton:hover {
-  background-color: #3d6e17;
+  background-color: var(--btn-hover);
 }
 
 .approveLabel {
@@ -78,7 +78,7 @@
 
 .metaGrid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 24px;
   margin-bottom: 32px;
   flex-shrink: 0;
@@ -90,9 +90,68 @@
   gap: 4px;
 }
 
+.metaLabelRow {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
 .metaLabel {
+  font-family: 'Arial Nova:Regular', sans-serif;
   font-size: 12px;
-  color: #6b7280;
+  line-height: 14px;
+  color: var(--text-secondary);
+}
+
+.infoTooltipWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.infoIconButton {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  line-height: 0;
+  opacity: 0.7;
+  transition: opacity 100ms ease;
+}
+
+.infoIconButton:hover {
+  opacity: 1;
+}
+
+.tooltip {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 200;
+  background-color: #0c2737;
+  border-radius: 8px;
+  padding: 10px 12px;
+  width: 200px;
+  box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.08), 8px 8px 16px 0px rgba(0,0,0,0.12);
+  font-family: 'Arial Nova:Regular', sans-serif;
+  font-size: 12px;
+  line-height: 14px;
+  color: #fff;
+}
+
+.tooltipText {
+  font-family: 'Arial Nova:Regular', sans-serif;
+  font-size: 12px;
+  line-height: 14px;
+  color: #fff;
+}
+
+.tooltipText strong {
+  font-family: 'Arial:Bold', sans-serif;
+  font-weight: 700;
 }
 
 .metaSelectWrapper {
@@ -102,12 +161,12 @@
 .metaSelect {
   width: 100%;
   appearance: none;
-  background-color: #fff;
-  border: 1px solid #d1d5db;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border);
   border-radius: 6px;
   padding: 8px 36px 8px 8px;
-  font-size: 14px;
-  color: #0c2737;
+  font-size: var(--font-size-body);
+  color: var(--text-primary);
   outline: none;
 }
 
@@ -116,7 +175,7 @@
   right: 12px;
   top: 50%;
   transform: translateY(-50%);
-  color: #6b7280;
+  color: var(--text-secondary);
   pointer-events: none;
 }
 
@@ -124,16 +183,16 @@
   position: relative;
   display: flex;
   align-items: center;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--border);
   border-radius: 6px;
-  background: white;
+  background: var(--bg-secondary);
   overflow: hidden;
 }
 
 .dateIcon {
   position: absolute;
   left: 8px;
-  color: #6b7280;
+  color: var(--text-secondary);
   pointer-events: none;
   flex-shrink: 0;
 }
@@ -143,8 +202,8 @@
   border: none;
   outline: none;
   padding: 8px 8px 8px 28px;
-  font-size: 14px;
-  color: #0c2737;
+  font-size: var(--font-size-body);
+  color: var(--text-primary);
   background: transparent;
   font-family: inherit;
   cursor: pointer;
@@ -162,22 +221,22 @@
 .wbsInput {
   border-radius: 6px;
   padding: 8px;
-  font-size: 14px;
+  font-size: var(--font-size-body);
   outline: none;
   transition: border-color 150ms ease, background-color 150ms ease;
-  border: 1px solid #d1d5db;
-  background-color: #fff;
-  color: #0c2737;
+  border: 1px solid var(--border);
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
 }
 
 .wbsInputHighlight {
-  background-color: #dcf2fe;
-  border-color: #7dd3fc;
-  color: #0077ac;
+  background-color: var(--bg-alert);
+  border-color: var(--border-alert);
+  color: var(--text-alert);
 }
 
 .wbsInputHighlight::placeholder {
-  color: #0077ac;
+  color: var(--text-alert);
 }
 
 .channelSelectorWrapper {
@@ -220,11 +279,11 @@
 }
 
 .channelPillInactive {
-  background-color: #f8f9fb;
+  background-color: #e6e9eb;
 }
 
 .channelPillInactive:hover {
-  background-color: #edf6fb;
+  background-color: #d8dcde;
 }
 
 .channelPillLabel {
@@ -236,7 +295,7 @@
 }
 
 .channelPillLabelActive { color: #fff; }
-.channelPillLabelInactive { color: #72797e; }
+.channelPillLabelInactive { color: #0c2737; }
 
 .channelPillIcon {
   position: relative;
@@ -258,7 +317,7 @@
 .sectionsList {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 20px;
   flex: 1;
   flex-shrink: 0;
 }
@@ -266,38 +325,49 @@
 .editSection {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-}
-
-.editSectionHeader {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  gap: 4px;
+  width: 100%;
 }
 
 .editSectionLabel {
-  font-size: 14px;
-  color: #6b7280;
+  font-size: var(--font-size-small);
+  color: var(--text-secondary);
+}
+
+.editBox {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  display: flex;
+  gap: 4px;
+  align-items: flex-end;
+  width: 100%;
+  transition: border-color 150ms ease;
+}
+
+.editBoxActive {
+  border-color: var(--border-focus);
 }
 
 .editTextarea {
-  width: 100%;
-  border: 1px solid #7dd3fc;
-  border-radius: 6px;
-  padding: 12px;
-  font-size: 14px;
-  color: #0c2737;
-  resize: none;
+  flex: 1;
+  border: none;
   outline: none;
-  line-height: 1.6;
+  resize: none;
+  font-size: var(--font-size-body);
+  color: var(--text-primary);
+  line-height: var(--line-height-body);
   min-height: 80px;
   font-family: inherit;
+  background: transparent;
 }
 
 .editBody {
-  font-size: 14px;
-  color: #0c2737;
-  line-height: 1.6;
+  flex: 1;
+  font-size: var(--font-size-body);
+  color: #374151;
+  line-height: var(--line-height-body);
 }
 
 .editParagraph {

@@ -1,9 +1,44 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import clsx from "clsx";
 import { Edit3, Calendar, ChevronDown, CheckCircle } from "lucide-react";
 import styles from "./StrategicBrief.module.css";
 
 const ALL_CHANNELS = ["Web", "Email", "Paid Media", "Analytics", "UX", "AI", "Event"];
+
+const InfoIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ display: 'block', flexShrink: 0 }}>
+    <circle cx="7" cy="7" r="6.125" stroke="#72797e" strokeWidth="1.25" />
+    <path d="M7 6.5V10" stroke="#72797e" strokeWidth="1.25" strokeLinecap="round" />
+    <circle cx="7" cy="4.5" r="0.75" fill="#72797e" />
+  </svg>
+);
+
+function InfoTooltip({ content }: { content: React.ReactNode }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [open]);
+
+  return (
+    <div ref={ref} className={styles.infoTooltipWrapper}>
+      <button className={styles.infoIconButton} onClick={() => setOpen(v => !v)} aria-label="More info">
+        <InfoIcon />
+      </button>
+      {open && (
+        <div className={styles.tooltip}>
+          {content}
+        </div>
+      )}
+    </div>
+  );
+}
 
 // Checkmark path (white, used inside active blue chip)
 const CheckIcon = () => (
@@ -36,7 +71,10 @@ const ChannelSelector = ({
 
   return (
     <div className={styles.channelSelectorWrapper}>
-      <p className={styles.channelSelectorLabel}>Channels involved</p>
+      <div className={styles.metaLabelRow}>
+        <p className={styles.channelSelectorLabel}>Channels involved</p>
+        <InfoTooltip content="Channels involved will define the work streams and deliverables of the project plan" />
+      </div>
       <div className={styles.channelPills}>
         {ALL_CHANNELS.map((channel) => {
           const active = selected.includes(channel);
@@ -99,26 +137,26 @@ const EditableTextSection = ({
 
   return (
     <div className={styles.editSection}>
-      <div className={styles.editSectionHeader}>
-        <label className={styles.editSectionLabel}>{label}</label>
+      <label className={styles.editSectionLabel}>{label}</label>
+      <div className={clsx(styles.editBox, editing && styles.editBoxActive)}>
         {editing ? (
-          <CheckCircle size={14} style={{ color: '#008AC0', cursor: 'pointer' }} onClick={handleSave} />
+          <textarea
+            autoFocus
+            className={styles.editTextarea}
+            value={tempVal}
+            onChange={(e) => setTempVal(e.target.value)}
+          />
         ) : (
-          <Edit3 size={14} style={{ color: '#008AC0', cursor: 'pointer' }} onClick={() => setEditing(true)} />
+          <div className={styles.editBody}>
+            {renderText ? renderText(value) : <p style={{ whiteSpace: 'pre-wrap' }}>{value}</p>}
+          </div>
+        )}
+        {editing ? (
+          <CheckCircle size={15} style={{ color: '#008AC0', cursor: 'pointer', flexShrink: 0 }} onClick={handleSave} />
+        ) : (
+          <Edit3 size={15} style={{ color: '#008AC0', cursor: 'pointer', flexShrink: 0 }} onClick={() => setEditing(true)} />
         )}
       </div>
-      {editing ? (
-        <textarea
-          autoFocus
-          className={styles.editTextarea}
-          value={tempVal}
-          onChange={(e) => setTempVal(e.target.value)}
-        />
-      ) : (
-        <div className={styles.editBody}>
-          {renderText ? renderText(value) : <p style={{ whiteSpace: 'pre-wrap' }}>{value}</p>}
-        </div>
-      )}
     </div>
   );
 };
@@ -160,7 +198,6 @@ export function StrategicBrief({ data, onUpdate, onApprove }: StrategicBriefProp
 
       <div className={styles.topRow}>
         <div>
-          <p className={styles.statusLabel}>Strategic Brief Draft</p>
           <EditableTitle value={data.title || "Renew Energy Promotion Web Page"} onSave={(val) => onUpdate({ ...data, title: val })} />
         </div>
         <button
@@ -181,7 +218,10 @@ export function StrategicBrief({ data, onUpdate, onApprove }: StrategicBriefProp
 
       <div className={styles.metaGrid}>
         <div className={styles.metaField}>
-          <label className={styles.metaLabel}>Project level</label>
+          <div className={styles.metaLabelRow}>
+            <label className={styles.metaLabel}>Project level</label>
+            <InfoTooltip content="Project level is chosen based on the number of channels and whether or not this is a new request or update." />
+          </div>
           <div className={styles.metaSelectWrapper}>
             <select className={styles.metaSelect}>
               <option>Campaign (Multi Channel)</option>
@@ -192,7 +232,10 @@ export function StrategicBrief({ data, onUpdate, onApprove }: StrategicBriefProp
           </div>
         </div>
         <div className={styles.metaField}>
-          <label className={styles.metaLabel}>Initiative</label>
+          <div className={styles.metaLabelRow}>
+            <label className={styles.metaLabel}>Initiative</label>
+            <InfoTooltip content="Initiative aligns this project to our company's high level objectives" />
+          </div>
           <div className={styles.metaSelectWrapper}>
             <select className={styles.metaSelect}>
               <option>Rewire Initiative</option>
@@ -217,10 +260,19 @@ export function StrategicBrief({ data, onUpdate, onApprove }: StrategicBriefProp
             <ChevronDown size={16} className={styles.selectChevron} />
           </div>
         </div>
-        <div className={styles.metaField} />
-
         <div className={styles.metaField}>
-          <label className={styles.metaLabel}>Priority</label>
+          <div className={styles.metaLabelRow}>
+            <label className={styles.metaLabel}>Priority</label>
+            <InfoTooltip content={
+              <span className={styles.tooltipText}>
+                Priority levels are defined as:<br /><br />
+                <strong>Operational: </strong>Keeps the business running<br />
+                <strong>Strategic: </strong>Drives growth &amp; transformation<br />
+                <strong>Quick Wins: </strong>High value, fast completion<br />
+                <strong>Crisis: </strong>Unplanned immediate response
+              </span>
+            } />
+          </div>
           <div className={styles.metaSelectWrapper}>
             <select className={styles.metaSelect}>
               <option>Operational</option>
@@ -270,6 +322,12 @@ export function StrategicBrief({ data, onUpdate, onApprove }: StrategicBriefProp
           label="Description"
           value={data.description}
           onSave={(val) => onUpdate({ ...data, description: val })}
+        />
+
+        <EditableTextSection
+          label="Goal"
+          value={data.goal}
+          onSave={(val) => onUpdate({ ...data, goal: val })}
         />
 
         <EditableTextSection

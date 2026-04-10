@@ -68,7 +68,7 @@ export function Header({
           <ProgressBar step={progressStep} />
         ) : (
           <div className={styles.chip} data-name="Chip">
-            <p className={styles.chipLabel}>Project Assistant</p>
+            <p className={styles.chipLabel}>Project Planner</p>
           </div>
         )}
       </div>

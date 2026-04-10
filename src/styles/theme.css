@@ -13,17 +13,72 @@
 }
 
 :root {
-  --font-size: 16px;
-  --color-bg-primary: #f8f9fb;
-  --color-bg-white: #ffffff;
-  --color-text-primary: #0c2737;
-  --color-text-secondary: #72797e;
-  --color-text-title: #0077ac;
-  --color-blue: #008ac0;
-  --color-green: #48801c;
-  --color-green-dark: #3d6e17;
-  --color-border: #b5bdc3;
-  --color-highlight-bg: #e1f5ff;
+  /* ── Backgrounds ── */
+  --bg-primary:   #f8f9fb;
+  --bg-secondary: #ffffff;
+  --bg-error:     #ffebe4;
+  --bg-success:   #e4fad9;
+  --bg-focus:     #e1f5ff;
+  --bg-alert:     #ffefce;
+  --bg-highlight: #008ac0;
+
+  /* ── Typography ── */
+  --text-primary:   #0c2737;
+  --text-highlight: #0077ac;
+  --text-secondary: #72797e;
+  --text-error:     #d04100;
+  --text-success:   #48801c;
+  --text-focus:     #0077ac;
+  --text-alert:     #503513;
+  --text-on-dark:   #ffffff;
+
+  /* ── Borders ── */
+  --border:         #b5bdc3;
+  --border-focus:   #5ab2e2;
+  --border-error:   #ec9070;
+  --border-success: #76bb47;
+  --border-alert:   #f39900;
+
+  /* ── Buttons ── */
+  --btn-default:  #48801c;
+  --btn-hover:    #2a421b;
+  --btn-disabled: #b5bdc3;
+
+  /* ── Charts / Graphs ── */
+  --chart-01: #008ac0;
+  --chart-02: #76bb47;
+  --chart-03: #ca8eef;
+  --chart-04: #ffbda5;
+  --chart-05: #f39900;
+  --chart-06: #6f328f;
+  --chart-07: #8ac8ed;
+
+  /* ── Typography scale ── */
+  --font-size-h1:       44px;
+  --font-size-h2:       32px;
+  --font-size-h3:       24px;
+  --font-size-h4:       18px;
+  --font-size-body:     14px;
+  --font-size-lead:     16px;
+  --font-size-large:    16px;
+  --font-size-small:    12px;
+  --font-size-subtitle: 11px;
+
+  --line-height-heading: 1.2;
+  --line-height-body:    1.6;
+  --line-height-ui:      1;
+
+  /* ── Legacy aliases (kept for compatibility) ── */
+  --color-bg-primary:      var(--bg-primary);
+  --color-bg-white:        var(--bg-secondary);
+  --color-text-primary:    var(--text-primary);
+  --color-text-secondary:  var(--text-secondary);
+  --color-text-title:      var(--text-highlight);
+  --color-blue:            #008ac0;
+  --color-green:           var(--btn-default);
+  --color-green-dark:      var(--btn-hover);
+  --color-border:          var(--border);
+  --color-highlight-bg:    var(--bg-focus);
 }
 
 *, *::before, *::after {
@@ -34,12 +89,12 @@
 
 html, body, #root {
   height: 100%;
-  font-size: var(--font-size);
+  font-size: var(--font-size-body);
 }
 
 body {
-  background-color: var(--color-bg-primary);
-  color: var(--color-text-primary);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   font-family: 'Arial Nova:Regular', sans-serif;
 }
 
@@ -49,20 +104,16 @@ body {
 
 @keyframes slideInFromLeft {
   from { transform: translateX(-20px); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
+  to   { transform: translateX(0); opacity: 1; }
 }
 
 @keyframes fadeIn {
   from { opacity: 0; }
-  to { opacity: 1; }
+  to   { opacity: 1; }
 }
 
-.custom-scrollbar::-webkit-scrollbar {
-  width: 6px;
-}
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
-}
+.custom-scrollbar::-webkit-scrollbar { width: 6px; }
+.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
 .custom-scrollbar::-webkit-scrollbar-thumb {
   background-color: rgba(0,0,0,0.1);
   border-radius: 10px;

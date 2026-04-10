@@ -119,7 +119,7 @@
 }
 
 .newChatButton:hover {
-  background-color: #3d6e17;
+  background-color: var(--btn-hover);
 }
 
 .newChatLabel {
@@ -148,7 +148,7 @@
 }
 
 .historyButtonOpen:hover {
-  background-color: #3d6e17;
+  background-color: var(--btn-hover);
 }
 
 .historyButtonClosed {
