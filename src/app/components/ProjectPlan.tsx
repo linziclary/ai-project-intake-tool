@@ -324,7 +324,10 @@ export function ProjectPlan({ briefData, planData, onUpdateBrief: _onUpdateBrief
                   <div className={styles.bulletIcon}>
                     <div className={styles.bulletIconInset}><CircleBullet /></div>
                   </div>
-                  <p className={styles.deliverableText}>{del.name}</p>
+                  <div className={styles.deliverableContent}>
+                    <p className={styles.deliverableName}>{del.name}</p>
+                    {del.description && <p className={styles.deliverableDescription}>{del.description}</p>}
+                  </div>
                   <div
                     className={styles.actionButton}
                     style={{ opacity: isHovered ? 1 : 0, transition: 'opacity 150ms ease' }}

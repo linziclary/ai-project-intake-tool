@@ -12,7 +12,7 @@ import styles from "./MainFlow.module.css";
 
 type Message = {
   id: string;
-  sender: "user" | "ai";
+  sender: "user" | "ai" | "system";
   text: string;
 };
 
@@ -45,9 +45,9 @@ export default function MainFlow() {
       {
         title: "Employee Communications",
         deliverables: [
-          { name: "Content Audit Report", completed: false },
-          { name: "Updated Copy for All Promotional Pages", completed: false },
-          { name: "SEO Keyword Mapping Document", completed: false },
+          { name: "Content Audit Report", description: "A content audit report identifying gaps and suggesting improvements for promotional pages.", completed: false },
+          { name: "Updated Copy for All Promotional Pages", description: "Crafting engaging copy for promotional pages, aligned with brand voice and objectives.", completed: false },
+          { name: "SEO Keyword Mapping Document", description: "A document outlining target keywords and their placement for better SEO.", completed: false },
         ],
         timeline: "1-2 Weeks | June 3, 2026 - July 15, 2026",
         approver: "John Doe",
@@ -56,7 +56,7 @@ export default function MainFlow() {
       {
         title: "Digital Execution",
         deliverables: [
-          { name: "Updated Webflow", completed: false }
+          { name: "Updated Webflow", description: "Updating the Webflow CMS with the latest promotional content.", completed: false }
         ],
         timeline: "1-2 Weeks | June 3, 2026 - July 15, 2026",
         approver: "John Doe",
@@ -65,8 +65,8 @@ export default function MainFlow() {
       {
         title: "Fuze & AV",
         deliverables: [
-          { name: "New Mockups for Landing Page", completed: false },
-          { name: "Figma Design System Updates", completed: false }
+          { name: "New Mockups for Landing Page", description: "Creating mockups for the landing page, showcasing updated content and UI.", completed: false },
+          { name: "Figma Design System Updates", description: "Updating the Figma design system for promotional page consistency.", completed: false }
         ],
         timeline: "1-2 Weeks | June 3, 2026 - July 15, 2026",
         approver: "John Doe",
@@ -75,9 +75,9 @@ export default function MainFlow() {
       {
         title: "Digital Execution",
         deliverables: [
-          { name: "API Integration Plan", completed: false },
-          { name: "New Feature Codebase", completed: false },
-          { name: "Performance Report Post-Launch", completed: false }
+          { name: "API Integration Plan", description: "A plan for integrating new promotional features with existing APIs.", completed: false },
+          { name: "New Feature Codebase", description: "Developing code for new promotional features, ensuring scalability.", completed: false },
+          { name: "Performance Report Post-Launch", description: "A post-launch analysis of campaign performance, identifying areas for optimization.", completed: false }
         ],
         timeline: "1-2 Weeks | June 3, 2026 - July 15, 2026",
         approver: "John Doe",
@@ -132,10 +132,20 @@ export default function MainFlow() {
         setIsGeneratingPlan(false);
       } else if (step === 3) {
         const newPlanData = JSON.parse(JSON.stringify(planData));
-        newPlanData.workstreams[3].deliverables.splice(2, 0, { name: "Staging Content Approval", completed: false });
+        newPlanData.workstreams[3].deliverables.splice(2, 0, { name: "Staging Content Approval", description: "Approval of staged content before launch.", completed: false });
         setPlanData(newPlanData);
         aiResponseText = "Nice addition.\n\nI've added that deliverable to the list, once you think this plan is ready to go I can route the work to each team directly.";
         setStep(4);
+      } else if (step === 5) {
+        aiResponseText = "Got it, thanks for clarifying those details.\n\nAre you ready to route the project to each team?";
+        setStep(6);
+      } else if (step === 6) {
+        aiResponseText = "Routing workstreams now!";
+        setIsRoutingData(true);
+        setTimeout(() => {
+          setIsRoutingData(false);
+          setStep(7);
+        }, 2000);
       }
 
       setMessages(prev => [...prev, { id: Date.now().toString(), sender: "ai", text: aiResponseText }]);
@@ -148,6 +158,8 @@ export default function MainFlow() {
     if (step === 1) return "This is a new project to address customer concerns about sustainable energy options. Budget: $75,000.";
     if (step === 2) return "The WBS code for this is RE2026-06. Once that is updated this brief is approved.";
     if (step === 3) return "Add Staging Content Approval as a deliverable to the last workstream.";
+    if (step === 5) return "KPIs are page views and time on site. No custom triggers needed. AA compliance required.";
+    if (step === 6) return "Yes, route the project.";
     return "Project details...";
   };
 
@@ -156,14 +168,15 @@ export default function MainFlow() {
   };
 
   const handleApprovePlan = () => {
-    setIsRoutingData(true);
-    setTimeout(() => {
-      setIsRoutingData(false);
-      setStep(5);
-    }, 2000);
+    setStep(5);
+    setMessages(prev => [
+      ...prev,
+      { id: Date.now().toString(), sender: "system", text: "Plan Approved" },
+      { id: (Date.now() + 1).toString(), sender: "ai", text: "I have some follow up questions about specific deliverables in the plan...\n\nFor the updated Web flows:\nWhat are the KPI benchmarks?\nDo you need any custom event triggers?\n\nFor the New Feature Code:\nDoes this need to be AA or AAA compliant?" }
+    ]);
   };
 
-  const documentType = isRoutingData ? "routing" : isGeneratingPlan ? "generating" : step >= 5 ? "success" : showReview ? "review" : step >= 3 ? "plan" : step >= 2 ? "brief" : "none";
+  const documentType = isRoutingData ? "routing" : isGeneratingPlan ? "generating" : step >= 7 ? "success" : step >= 5 ? "followup" : showReview ? "review" : step >= 3 ? "plan" : step >= 2 ? "brief" : "none";
 
   const progressStep = messages.length === 0 ? 0
     : step <= 1 ? 1
@@ -185,10 +198,10 @@ export default function MainFlow() {
 
         <div className={clsx(
           styles.contentRow,
-          documentType !== 'none' ? styles.contentRowSpread : styles.contentRowCenter
+          documentType !== 'none' && documentType !== 'followup' ? styles.contentRowSpread : styles.contentRowCenter
         )}>
 
-          {documentType !== 'none' && (
+          {documentType !== 'none' && documentType !== 'followup' && (
             <div className={clsx(
               styles.documentPanel,
               (documentType === 'success' || documentType === 'routing' || documentType === 'review') && styles.documentPanelFull
@@ -225,9 +238,9 @@ export default function MainFlow() {
           {documentType !== 'success' && documentType !== 'routing' && documentType !== 'review' && (
             <div className={clsx(
               styles.chatColumn,
-              documentType !== 'none' ? styles.chatColumnNarrow : styles.chatColumnWide,
-              documentType === 'none' && step === 0 && messages.length === 0 && styles.chatColumnWideCenter,
-              documentType === 'none' && !(step === 0 && messages.length === 0) && styles.chatColumnWidePadded
+              documentType !== 'none' && documentType !== 'followup' ? styles.chatColumnNarrow : styles.chatColumnWide,
+              (documentType === 'none' || documentType === 'followup') && step === 0 && messages.length === 0 && styles.chatColumnWideCenter,
+              (documentType === 'none' || documentType === 'followup') && !(step === 0 && messages.length === 0) && styles.chatColumnWidePadded
             )}>
 
               {step === 0 && messages.length === 0 && (

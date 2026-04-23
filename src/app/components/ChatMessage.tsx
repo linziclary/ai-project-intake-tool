@@ -1,11 +1,27 @@
 import styles from "./ChatMessage.module.css";
 
 interface ChatMessageProps {
-  sender: "user" | "ai";
+  sender: "user" | "ai" | "system";
   text: string;
 }
 
+const CheckCircleGreen = () => (
+  <svg width="15" height="15" viewBox="0 0 15 15" fill="none" style={{ flexShrink: 0 }}>
+    <circle cx="7.5" cy="7.5" r="6.125" stroke="#48801c" strokeWidth="1.25" />
+    <path d="M4.5 7.5L6.5 9.5L10.5 5.5" stroke="#48801c" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
 export function ChatMessage({ sender, text }: ChatMessageProps) {
+  if (sender === "system") {
+    return (
+      <div className={styles.systemRow}>
+        <CheckCircleGreen />
+        <span className={styles.systemText}>{text}</span>
+      </div>
+    );
+  }
+
   if (sender === "user") {
     return (
       <div className={styles.userRow}>

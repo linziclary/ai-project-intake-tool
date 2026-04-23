@@ -290,7 +290,7 @@
 .deliverableRow {
   display: flex;
   gap: 8px;
-  align-items: center;
+  align-items: flex-start;
   width: 100%;
 }
 
@@ -306,12 +306,28 @@
   inset: 5.85%;
 }
 
-.deliverableText {
-  font-family: 'Arial Nova:Regular', sans-serif;
-  line-height: 18px;
-  font-size: 14px;
-  color: #374151;
+.deliverableContent {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
   flex: 1;
+  min-width: 0;
+}
+
+.deliverableName {
+  font-family: 'Arial', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 14px;
+  color: #374151;
+}
+
+.deliverableDescription {
+  font-family: 'Arial Nova', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 14px;
+  color: #0c2737;
 }
 
 .editInputWrapper {

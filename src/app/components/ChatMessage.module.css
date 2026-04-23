@@ -63,3 +63,18 @@
   line-height: 18px;
   color: #0c2737;
 }
+
+.systemRow {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 0;
+}
+
+.systemText {
+  font-family: 'Arial Nova:Bold', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 18px;
+  color: #48801c;
+}
