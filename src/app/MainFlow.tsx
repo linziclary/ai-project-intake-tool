@@ -114,6 +114,17 @@ export default function MainFlow() {
   const handleSendMessage = (text: string) => {
     const newUserMsg: Message = { id: Date.now().toString(), sender: "user", text };
     setMessages(prev => [...prev, newUserMsg]);
+
+    if (step === 6) {
+      setMessages(prev => [...prev, { id: Date.now().toString(), sender: "ai", text: "Routing workstreams now!" }]);
+      setIsRoutingData(true);
+      setTimeout(() => {
+        setIsRoutingData(false);
+        setStep(7);
+      }, 2000);
+      return;
+    }
+
     setIsAiTyping(true);
 
     if (step === 2) {
@@ -143,13 +154,6 @@ export default function MainFlow() {
       } else if (step === 5) {
         aiResponseText = "Got it, thanks for clarifying those details.\n\nAre you ready to route the project to each team?";
         setStep(6);
-      } else if (step === 6) {
-        aiResponseText = "Routing workstreams now!";
-        setIsRoutingData(true);
-        setTimeout(() => {
-          setIsRoutingData(false);
-          setStep(7);
-        }, 2000);
       }
 
       setMessages(prev => [...prev, { id: Date.now().toString(), sender: "ai", text: aiResponseText }]);
