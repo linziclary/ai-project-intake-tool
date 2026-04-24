@@ -110,15 +110,12 @@ function ShareDropdown({ onClose, onViewReview }: { onClose: () => void; onViewR
 
 function ChannelsDisplay({ channels }: { channels: string[] }) {
   return (
-    <div className={styles.channelsWrapper}>
-      <p className={styles.channelsLabel}>Channels involved</p>
-      <div className={styles.channelPills}>
-        {(channels || []).map((channel) => (
-          <div key={channel} className={styles.channelPill}>
-            <p className={styles.channelPillLabel}>{channel}</p>
-          </div>
-        ))}
-      </div>
+    <div className={styles.channelPills}>
+      {(channels || []).map((channel) => (
+        <div key={channel} className={styles.channelPill}>
+          <p className={styles.channelPillLabel}>{channel}</p>
+        </div>
+      ))}
     </div>
   );
 }
@@ -264,10 +261,11 @@ export function ProjectPlan({ briefData, planData, onUpdateBrief: _onUpdateBrief
 
       {/* Channels & Deliverables */}
       <div className={styles.deliverablesSection}>
-        <p className={styles.sectionTitle}>Channels & Deliverables</p>
-
         {planData.workstreams.map((ws: any, wsIdx: number) => (
-          <div key={wsIdx} className={styles.workstreamCard}>
+          <div key={wsIdx} className={styles.workstreamGroup}>
+            <p className={styles.workstreamGroupTitle}>{ws.title}</p>
+
+          <div className={styles.workstreamCard}>
 
             {/* Workstream header */}
             <div className={styles.workstreamHeader}>
@@ -289,14 +287,13 @@ export function ProjectPlan({ briefData, planData, onUpdateBrief: _onUpdateBrief
                   </button>
                 </div>
               </div>
-              <div className={clsx(styles.routedPill, ws.isRouted && styles.routedPillSuccess)}>
-                <p className={clsx(styles.routedPillLabel, ws.isRouted && styles.routedPillLabelSuccess)}>
-                  Routed to {ws.routedTo}
-                </p>
-              </div>
+              <p className={clsx(styles.routedText, ws.isRouted && styles.routedTextSuccess)}>
+                Routed to {ws.routedTo}
+              </p>
             </div>
 
             {/* Deliverables */}
+            <div className={styles.deliverablesList}>
             {ws.deliverables.map((del: any, dIdx: number) => {
               const isEditing = editingDel?.wsIdx === wsIdx && editingDel?.delIdx === dIdx;
               const isHovered = hoveredDel?.wsIdx === wsIdx && hoveredDel?.delIdx === dIdx;
@@ -388,6 +385,7 @@ export function ProjectPlan({ briefData, planData, onUpdateBrief: _onUpdateBrief
 
             {/* New deliverable input */}
             {newDel?.wsIdx === wsIdx && (
+
               <div className={styles.deliverableEditContainer}>
                 <div className={styles.deliverableRow}>
                   <div className={styles.bulletIcon}>
@@ -432,6 +430,7 @@ export function ProjectPlan({ briefData, planData, onUpdateBrief: _onUpdateBrief
                 </div>
               </div>
             )}
+            </div>{/* end deliverablesList */}
 
             {/* Footer */}
             <div className={styles.footer}>
@@ -537,6 +536,7 @@ export function ProjectPlan({ briefData, planData, onUpdateBrief: _onUpdateBrief
             </div>
 
           </div>
+          </div>{/* end workstreamGroup */}
         ))}
       </div>
 
