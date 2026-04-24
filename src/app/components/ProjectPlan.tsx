@@ -235,11 +235,17 @@ export function ProjectPlan({ briefData, planData, onUpdateBrief: _onUpdateBrief
 
       {/* Channels & Deliverables */}
       <div className={styles.deliverablesSection}>
-        {planData.workstreams.map((ws: any, wsIdx: number) => (
-          <div key={wsIdx} className={styles.workstreamGroup}>
-            <p className={styles.workstreamGroupTitle}>{ws.title}</p>
+        {(planData.workstreams as any[]).reduce((groups: { title: string; items: { ws: any; wsIdx: number }[] }[], ws, wsIdx) => {
+          const existing = groups.find(g => g.title === ws.title);
+          if (existing) { existing.items.push({ ws, wsIdx }); }
+          else { groups.push({ title: ws.title, items: [{ ws, wsIdx }] }); }
+          return groups;
+        }, []).map((group) => (
+          <div key={group.title} className={styles.workstreamGroup}>
+            <p className={styles.workstreamGroupTitle}>{group.title}</p>
 
-          <div className={styles.workstreamCard}>
+          {group.items.map(({ ws, wsIdx }) => (
+          <div key={wsIdx} className={styles.workstreamCard}>
 
             {/* Workstream header */}
             <div className={styles.workstreamHeader}>
@@ -407,6 +413,7 @@ export function ProjectPlan({ briefData, planData, onUpdateBrief: _onUpdateBrief
             </div>
 
           </div>
+          ))}
           </div>
         ))}
       </div>

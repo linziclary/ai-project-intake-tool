@@ -43,7 +43,7 @@ export default function MainFlow() {
   const initialPlanData = {
     workstreams: [
       {
-        title: "Employee Communications",
+        title: "Digital Execution",
         channel: "Web",
         deliverables: [
           { name: "Content Audit Report", type: "Report", description: "A content audit report identifying gaps and suggesting improvements for promotional pages.", completed: false },
