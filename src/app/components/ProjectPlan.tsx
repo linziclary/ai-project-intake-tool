@@ -430,7 +430,7 @@ export function ProjectPlan({ briefData, planData, onUpdateBrief: _onUpdateBrief
                 </div>
               </div>
             )}
-            </div>{/* end deliverablesList */}
+            </div>
 
             {/* Footer */}
             <div className={styles.footer}>
@@ -536,7 +536,7 @@ export function ProjectPlan({ briefData, planData, onUpdateBrief: _onUpdateBrief
             </div>
 
           </div>
-          </div>{/* end workstreamGroup */}
+          </div>
         ))}
       </div>
 
