@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import clsx from "clsx";
-import { Calendar, ChevronDown, Edit3 } from "lucide-react";
+import { ChevronDown, Edit3 } from "lucide-react";
 import { Link2Icon } from "@radix-ui/react-icons";
 import styles from "./ProjectPlan.module.css";
 
@@ -132,10 +132,6 @@ const DELIVERABLE_TYPES = [
   "Other",
 ];
 
-const getDateRange = (ws: any) => {
-  if (ws.startDate) return `${ws.startDate} to ${ws.endDate || ws.startDate}  ${ws.duration || ''}`.trim();
-  return ws.timeline || '';
-};
 
 export function ProjectPlan({ briefData, planData, onUpdateBrief: _onUpdateBrief, onUpdatePlan, onBackToBrief, onApprove, onViewReview }: ProjectPlanProps) {
   const [showShare, setShowShare] = useState(false);
@@ -148,13 +144,6 @@ export function ProjectPlan({ briefData, planData, onUpdateBrief: _onUpdateBrief
   const [newDelValue, setNewDelValue] = useState("");
   const [newDelType, setNewDelType] = useState("");
   const [newDelDescription, setNewDelDescription] = useState("");
-  const [editingDatesIdx, setEditingDatesIdx] = useState<number | null>(null);
-  const [editStartDate, setEditStartDate] = useState("");
-  const [editEndDate, setEditEndDate] = useState("");
-  const [editingApproverIdx, setEditingApproverIdx] = useState<number | null>(null);
-  const [editApproverValue, setEditApproverValue] = useState("");
-  const [hoveredDateIdx, setHoveredDateIdx] = useState<number | null>(null);
-  const [hoveredApproverIdx, setHoveredApproverIdx] = useState<number | null>(null);
 
   const saveDel = (wsIdx: number, delIdx: number) => {
     const updated = JSON.parse(JSON.stringify(planData));
@@ -191,21 +180,6 @@ export function ProjectPlan({ briefData, planData, onUpdateBrief: _onUpdateBrief
     setNewDelDescription("");
   };
 
-  const saveDates = (wsIdx: number) => {
-    const updated = JSON.parse(JSON.stringify(planData));
-    updated.workstreams[wsIdx].startDate = editStartDate;
-    updated.workstreams[wsIdx].endDate = editEndDate;
-    updated.workstreams[wsIdx].timeline = `${editStartDate} to ${editEndDate}`;
-    onUpdatePlan(updated);
-    setEditingDatesIdx(null);
-  };
-
-  const saveApprover = (wsIdx: number) => {
-    const updated = JSON.parse(JSON.stringify(planData));
-    updated.workstreams[wsIdx].approver = editApproverValue;
-    onUpdatePlan(updated);
-    setEditingApproverIdx(null);
-  };
 
   return (
     <div className={clsx(styles.container, 'custom-scrollbar')}>
@@ -430,109 +404,6 @@ export function ProjectPlan({ briefData, planData, onUpdateBrief: _onUpdateBrief
                 </div>
               </div>
             )}
-            </div>
-
-            {/* Footer */}
-            <div className={styles.footer}>
-
-              {/* Left: date range / edit dates */}
-              {editingDatesIdx === wsIdx ? (
-                <div style={{ display: 'flex', alignItems: 'flex-end', gap: '8px' }}>
-                  {/* Start date field */}
-                  <div className={styles.footerFieldWrapper}>
-                    <p className={styles.footerFieldLabel}>Start</p>
-                    <div className={styles.footerInputBox}>
-                      <Calendar size={14} color="#72797e" style={{ flexShrink: 0 }} />
-                      <input
-                        type="date"
-                        autoFocus
-                        className={styles.footerDateInput}
-                        value={editStartDate}
-                        onChange={(e) => setEditStartDate(e.target.value)}
-                        onKeyDown={(e) => { if (e.key === "Enter") saveDates(wsIdx); if (e.key === "Escape") setEditingDatesIdx(null); }}
-                      />
-                    </div>
-                  </div>
-                  {/* End date field */}
-                  <div className={styles.footerFieldWrapper}>
-                    <p className={styles.footerFieldLabel}>Due Date</p>
-                    <div className={styles.footerInputBox}>
-                      <Calendar size={14} color="#72797e" style={{ flexShrink: 0 }} />
-                      <input
-                        type="date"
-                        className={styles.footerDateInput}
-                        value={editEndDate}
-                        onChange={(e) => setEditEndDate(e.target.value)}
-                        onKeyDown={(e) => { if (e.key === "Enter") saveDates(wsIdx); if (e.key === "Escape") setEditingDatesIdx(null); }}
-                      />
-                    </div>
-                  </div>
-                  <button onClick={() => saveDates(wsIdx)} className={styles.actionButton} style={{ marginBottom: '2px' }}>
-                    <SaveIcon />
-                  </button>
-                </div>
-              ) : (
-                <div style={{ flex: 1 }}>
-                  <div
-                    className={styles.footerHoverRow}
-                    style={{ width: 'fit-content' }}
-                    onMouseEnter={() => setHoveredDateIdx(wsIdx)}
-                    onMouseLeave={() => setHoveredDateIdx(null)}
-                    onClick={() => {
-                      setEditingDatesIdx(wsIdx);
-                      setEditStartDate(ws.startDate || '');
-                      setEditEndDate(ws.endDate || '');
-                      setEditingApproverIdx(null);
-                    }}
-                  >
-                    <p className={styles.footerText}>{getDateRange(ws)}</p>
-                    <div style={{ opacity: hoveredDateIdx === wsIdx ? 1 : 0, transition: 'opacity 150ms ease' }}>
-                      <Edit3 size={15} color="#008AC0" />
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Right: approver / edit approver */}
-              {editingApproverIdx === wsIdx ? (
-                <div style={{ display: 'flex', alignItems: 'flex-end', gap: '4px' }}>
-                  <div className={styles.footerFieldWrapper} style={{ width: '200px', flex: 'none' }}>
-                    <p className={styles.footerFieldLabel}>Approver</p>
-                    <div className={styles.footerInputBox}>
-                      <input
-                        autoFocus
-                        className={styles.footerInput}
-                        value={editApproverValue}
-                        onChange={(e) => setEditApproverValue(e.target.value)}
-                        onKeyDown={(e) => { if (e.key === "Enter") saveApprover(wsIdx); if (e.key === "Escape") setEditingApproverIdx(null); }}
-                        style={{ flex: 1, minWidth: 0 }}
-                      />
-                      <ChevronDown size={14} color="#72797e" style={{ flexShrink: 0 }} />
-                    </div>
-                  </div>
-                  <button onClick={() => saveApprover(wsIdx)} className={styles.actionButton} style={{ marginBottom: '2px' }}>
-                    <SaveIcon />
-                  </button>
-                </div>
-              ) : (
-                <div
-                  className={styles.footerHoverRow}
-                  style={{ flex: 'none' }}
-                  onMouseEnter={() => setHoveredApproverIdx(wsIdx)}
-                  onMouseLeave={() => setHoveredApproverIdx(null)}
-                  onClick={() => {
-                    setEditingApproverIdx(wsIdx);
-                    setEditApproverValue(ws.approver || '');
-                    setEditingDatesIdx(null);
-                  }}
-                >
-                  <p className={styles.footerText} style={{ flex: 'none' }}>Approver {ws.approver}</p>
-                  <div style={{ opacity: hoveredApproverIdx === wsIdx ? 1 : 0, transition: 'opacity 150ms ease' }}>
-                    <Edit3 size={15} color="#008AC0" />
-                  </div>
-                </div>
-              )}
-
             </div>
 
           </div>
