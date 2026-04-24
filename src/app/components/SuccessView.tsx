@@ -37,37 +37,41 @@ export function SuccessView({ briefData, planData }: SuccessViewProps) {
           </div>
         </div>
 
-        <h2 className={styles.workstreamsTitle}>Workstreams</h2>
-
-        <div className={styles.workstreamsList}>
-          {planData.workstreams.map((ws: any, idx: number) => (
-            <div key={idx} className={styles.workstream}>
-              <div className={styles.workstreamHeader}>
-                <div className={styles.workstreamTitleRow}>
-                  <h3 className={styles.workstreamTitle}>{ws.title}</h3>
-                  <span className={styles.deliverablesBadge}>{ws.deliverables.length} Deliverables</span>
-                </div>
-                <a href="#" className={styles.viewLink}>
-                  View in {ws.routedTo} <ArrowUpRight size={14} style={{ marginLeft: '2px' }} />
-                </a>
-              </div>
-
-              <div className={styles.deliverablesList}>
-                {ws.deliverables.map((del: any, dIdx: number) => (
-                  <div key={dIdx} className={styles.deliverableItem}>
-                    <div className={styles.deliverableItemTop}>
-                      <p className={styles.deliverable}>{del.name}</p>
-                      {del.type && <span className={styles.typeChip}>{del.type}</span>}
+        <div className={styles.deliverablesSection}>
+          {(planData.workstreams as any[]).reduce((groups: { title: string; items: { ws: any; idx: number }[] }[], ws, idx) => {
+            const existing = groups.find(g => g.title === ws.title);
+            if (existing) { existing.items.push({ ws, idx }); }
+            else { groups.push({ title: ws.title, items: [{ ws, idx }] }); }
+            return groups;
+          }, []).map((group) => (
+            <div key={group.title} className={styles.workstreamGroup}>
+              <p className={styles.workstreamGroupTitle}>{group.title}</p>
+              {group.items.map(({ ws, idx }: { ws: any; idx: number }) => (
+                <div key={idx} className={styles.workstreamCard}>
+                  <div className={styles.workstreamHeader}>
+                    <div className={styles.workstreamLeft}>
+                      <span className={styles.workstreamTitle}>{ws.channel || ws.title}</span>
+                      <span className={styles.deliverablesBadge}>
+                        {ws.deliverables.length} Deliverable{ws.deliverables.length !== 1 ? "s" : ""}
+                      </span>
                     </div>
-                    {del.description && <p className={styles.deliverableDesc}>{del.description}</p>}
+                    <a href="#" className={styles.viewLink}>
+                      View in {ws.routedTo} <ArrowUpRight size={14} style={{ marginLeft: '2px' }} />
+                    </a>
                   </div>
-                ))}
-              </div>
-
-              <div className={styles.workstreamMeta}>
-                <span>{ws.timeline}</span>
-                <span>Approver: {ws.approver}</span>
-              </div>
+                  <div className={styles.deliverablesList}>
+                    {ws.deliverables.map((del: any, dIdx: number) => (
+                      <div key={dIdx} className={styles.deliverableItem}>
+                        <div className={styles.deliverableItemTop}>
+                          <p className={styles.deliverable}>{del.name}</p>
+                          {del.type && <span className={styles.typeChip}>{del.type}</span>}
+                        </div>
+                        {del.description && <p className={styles.deliverableDesc}>{del.description}</p>}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
           ))}
         </div>

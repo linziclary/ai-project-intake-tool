@@ -102,34 +102,34 @@
   white-space: nowrap;
 }
 
-.sectionTitle {
-  font-family: 'Arial Nova:Bold', sans-serif;
-  line-height: 24px;
-  font-size: 18px;
-  color: #0077ac;
-  margin-bottom: 8px;
-}
-
-.workstreamsList {
+.deliverablesSection {
   display: flex;
   flex-direction: column;
+  gap: 24px;
 }
 
-.workstream {
+.workstreamGroup {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 16px 0;
-  border-bottom: 1px solid #b5bdc3;
 }
 
-.workstream:first-child {
-  padding-top: 0;
+.workstreamGroupTitle {
+  font-family: 'Arial Nova:Bold', sans-serif;
+  font-size: 16px;
+  line-height: 20px;
+  color: #0077ac;
+  white-space: nowrap;
 }
 
-.workstream:last-child {
-  border-bottom: none;
-  padding-bottom: 0;
+.workstreamCard {
+  border: 1px solid #b5bdc3;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  border-radius: 8px;
+  width: 100%;
 }
 
 .workstreamHeader {
@@ -154,17 +154,6 @@
 }
 
 .deliverablesBadge {
-  background-color: #e6e9eb;
-  color: #0c2737;
-  padding: 4px 8px;
-  border-radius: 32px;
-  font-family: 'Arial Nova:Regular', sans-serif;
-  font-size: 12px;
-  line-height: 14px;
-  white-space: nowrap;
-}
-
-.routedPill {
   background-color: #e1f5ff;
   color: #0077ac;
   padding: 4px 8px;
@@ -175,10 +164,18 @@
   white-space: nowrap;
 }
 
+.routedText {
+  font-family: 'Arial Nova:Regular', sans-serif;
+  font-size: 12px;
+  line-height: 14px;
+  color: #0077ac;
+  white-space: nowrap;
+}
+
 .deliverablesList {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
 }
 
 .deliverableItem {
@@ -222,18 +219,6 @@
   font-size: 12px;
   line-height: 14px;
   color: #72797e;
-}
-
-.footer {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  font-family: 'Arial Nova:Regular', sans-serif;
-  font-size: 14px;
-  line-height: 18px;
-  color: #72797e;
-  white-space: nowrap;
-  padding-top: 4px;
 }
 
 .backButton {

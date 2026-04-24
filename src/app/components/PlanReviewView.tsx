@@ -64,40 +64,41 @@ export function PlanReviewView({ briefData, planData, onBackToDraft }: PlanRevie
         </div>
 
         {/* Channels & Deliverables */}
-        <div>
-          <p className={styles.sectionTitle}>Channels &amp; Deliverables</p>
-          <div className={styles.workstreamsList}>
-            {planData.workstreams.map((ws: any, idx: number) => (
-              <div key={idx} className={styles.workstream}>
-                <div className={styles.workstreamHeader}>
-                  <div className={styles.workstreamLeft}>
-                    <span className={styles.workstreamTitle}>{ws.title}</span>
-                    <span className={styles.deliverablesBadge}>
-                      {ws.deliverables.length} Deliverable{ws.deliverables.length !== 1 ? "s" : ""}
-                    </span>
-                  </div>
-                  <span className={styles.routedPill}>Routed to {ws.routedTo}</span>
-                </div>
-
-                <div className={styles.deliverablesList}>
-                  {ws.deliverables.map((del: any, dIdx: number) => (
-                    <div key={dIdx} className={styles.deliverableItem}>
-                      <div className={styles.deliverableItemTop}>
-                        <p className={styles.deliverable}>{del.name}</p>
-                        {del.type && <span className={styles.typeChip}>{del.type}</span>}
-                      </div>
-                      {del.description && <p className={styles.deliverableDesc}>{del.description}</p>}
+        <div className={styles.deliverablesSection}>
+          {(planData.workstreams as any[]).reduce((groups: { title: string; items: { ws: any; idx: number }[] }[], ws, idx) => {
+            const existing = groups.find(g => g.title === ws.title);
+            if (existing) { existing.items.push({ ws, idx }); }
+            else { groups.push({ title: ws.title, items: [{ ws, idx }] }); }
+            return groups;
+          }, []).map((group) => (
+            <div key={group.title} className={styles.workstreamGroup}>
+              <p className={styles.workstreamGroupTitle}>{group.title}</p>
+              {group.items.map(({ ws, idx }: { ws: any; idx: number }) => (
+                <div key={idx} className={styles.workstreamCard}>
+                  <div className={styles.workstreamHeader}>
+                    <div className={styles.workstreamLeft}>
+                      <span className={styles.workstreamTitle}>{ws.channel || ws.title}</span>
+                      <span className={styles.deliverablesBadge}>
+                        {ws.deliverables.length} Deliverable{ws.deliverables.length !== 1 ? "s" : ""}
+                      </span>
                     </div>
-                  ))}
+                    <span className={styles.routedText}>Routed to {ws.routedTo}</span>
+                  </div>
+                  <div className={styles.deliverablesList}>
+                    {ws.deliverables.map((del: any, dIdx: number) => (
+                      <div key={dIdx} className={styles.deliverableItem}>
+                        <div className={styles.deliverableItemTop}>
+                          <p className={styles.deliverable}>{del.name}</p>
+                          {del.type && <span className={styles.typeChip}>{del.type}</span>}
+                        </div>
+                        {del.description && <p className={styles.deliverableDesc}>{del.description}</p>}
+                      </div>
+                    ))}
+                  </div>
                 </div>
-
-                <div className={styles.footer}>
-                  <span>{ws.timeline || `${ws.startDate || ''} to ${ws.endDate || ''}  ${ws.duration || ''}`.trim()}</span>
-                  <span>Approver {ws.approver}</span>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ))}
         </div>
 
         {/* Back to Draft */}
