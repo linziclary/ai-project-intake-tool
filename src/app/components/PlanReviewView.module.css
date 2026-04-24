@@ -181,12 +181,47 @@
   gap: 8px;
 }
 
-.deliverable {
-  font-family: 'Arial Nova:Regular', sans-serif;
-  font-size: 14px;
-  line-height: 18px;
-  color: #374151;
+.deliverableItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
   padding: 0 8px;
+}
+
+.deliverableItemTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.deliverable {
+  font-family: 'Arial Nova:Bold', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 14px;
+  color: #0c2737;
+  flex: 1;
+  min-width: 0;
+}
+
+.typeChip {
+  background-color: #e6e9eb;
+  color: #0c2737;
+  padding: 4px 8px;
+  border-radius: 32px;
+  font-family: 'Arial Nova:Regular', sans-serif;
+  font-size: 12px;
+  line-height: 14px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.deliverableDesc {
+  font-family: 'Arial Nova:Regular', sans-serif;
+  font-size: 12px;
+  line-height: 14px;
+  color: #72797e;
 }
 
 .footer {

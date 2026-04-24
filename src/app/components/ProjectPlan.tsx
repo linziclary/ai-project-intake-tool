@@ -123,6 +123,18 @@ function ChannelsDisplay({ channels }: { channels: string[] }) {
   );
 }
 
+const DELIVERABLE_TYPES = [
+  "Web Page",
+  "Email",
+  "Report",
+  "Document",
+  "Design File",
+  "Video",
+  "Social Post",
+  "Presentation",
+  "Other",
+];
+
 const getDateRange = (ws: any) => {
   if (ws.startDate) return `${ws.startDate} to ${ws.endDate || ws.startDate}  ${ws.duration || ''}`.trim();
   return ws.timeline || '';
@@ -133,8 +145,12 @@ export function ProjectPlan({ briefData, planData, onUpdateBrief: _onUpdateBrief
   const [hoveredDel, setHoveredDel] = useState<{ wsIdx: number; delIdx: number } | null>(null);
   const [editingDel, setEditingDel] = useState<{ wsIdx: number; delIdx: number } | null>(null);
   const [editingDelValue, setEditingDelValue] = useState("");
+  const [editingDelType, setEditingDelType] = useState("");
+  const [editingDelDescription, setEditingDelDescription] = useState("");
   const [newDel, setNewDel] = useState<{ wsIdx: number } | null>(null);
   const [newDelValue, setNewDelValue] = useState("");
+  const [newDelType, setNewDelType] = useState("");
+  const [newDelDescription, setNewDelDescription] = useState("");
   const [editingDatesIdx, setEditingDatesIdx] = useState<number | null>(null);
   const [editStartDate, setEditStartDate] = useState("");
   const [editEndDate, setEditEndDate] = useState("");
@@ -146,6 +162,8 @@ export function ProjectPlan({ briefData, planData, onUpdateBrief: _onUpdateBrief
   const saveDel = (wsIdx: number, delIdx: number) => {
     const updated = JSON.parse(JSON.stringify(planData));
     updated.workstreams[wsIdx].deliverables[delIdx].name = editingDelValue;
+    updated.workstreams[wsIdx].deliverables[delIdx].type = editingDelType;
+    updated.workstreams[wsIdx].deliverables[delIdx].description = editingDelDescription;
     onUpdatePlan(updated);
     setEditingDel(null);
   };
@@ -160,16 +178,20 @@ export function ProjectPlan({ briefData, planData, onUpdateBrief: _onUpdateBrief
   const startNewDel = (wsIdx: number) => {
     setNewDel({ wsIdx });
     setNewDelValue("");
+    setNewDelType("");
+    setNewDelDescription("");
     setEditingDel(null);
   };
 
   const saveNewDel = (wsIdx: number) => {
     if (!newDelValue.trim()) { setNewDel(null); return; }
     const updated = JSON.parse(JSON.stringify(planData));
-    updated.workstreams[wsIdx].deliverables.push({ name: newDelValue.trim(), completed: false });
+    updated.workstreams[wsIdx].deliverables.push({ name: newDelValue.trim(), type: newDelType, description: newDelDescription, completed: false });
     onUpdatePlan(updated);
     setNewDel(null);
     setNewDelValue("");
+    setNewDelType("");
+    setNewDelDescription("");
   };
 
   const saveDates = (wsIdx: number) => {
@@ -281,29 +303,47 @@ export function ProjectPlan({ briefData, planData, onUpdateBrief: _onUpdateBrief
 
               if (isEditing) {
                 return (
-                  <div key={dIdx} className={styles.deliverableRow}>
-                    <div className={styles.bulletIcon}>
-                      <div className={styles.bulletIconInset}><CircleBullet /></div>
+                  <div key={dIdx} className={styles.deliverableEditContainer}>
+                    <div className={styles.deliverableRow}>
+                      <div className={styles.bulletIcon}>
+                        <div className={styles.bulletIconInset}><CircleBullet /></div>
+                      </div>
+                      <div className={styles.editTitleBox}>
+                        <input
+                          autoFocus
+                          className={styles.editInput}
+                          value={editingDelValue}
+                          onChange={(e) => setEditingDelValue(e.target.value)}
+                          onKeyDown={(e) => { if (e.key === "Escape") setEditingDel(null); }}
+                        />
+                      </div>
+                      <div className={styles.typeSelectWrapper}>
+                        <select
+                          className={styles.typeSelect}
+                          value={editingDelType}
+                          onChange={(e) => setEditingDelType(e.target.value)}
+                        >
+                          <option value="">Select type...</option>
+                          {DELIVERABLE_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
+                        </select>
+                        <ChevronDown size={11} color="#72797e" className={styles.typeSelectChevron} />
+                      </div>
+                      <button onClick={() => deleteDel(wsIdx, dIdx)} className={styles.actionButton}>
+                        <TrashIcon />
+                      </button>
                     </div>
-                    <div className={styles.editInputWrapper}>
-                      <input
-                        autoFocus
-                        className={styles.editInput}
-                        value={editingDelValue}
-                        onChange={(e) => setEditingDelValue(e.target.value)}
-                        onKeyDown={(e) => { if (e.key === "Enter") saveDel(wsIdx, dIdx); if (e.key === "Escape") setEditingDel(null); }}
+                    <div className={styles.editDescRow}>
+                      <textarea
+                        className={styles.descriptionInput}
+                        value={editingDelDescription}
+                        onChange={(e) => setEditingDelDescription(e.target.value)}
+                        placeholder="Add a description..."
+                        rows={2}
                       />
                       <button onClick={() => saveDel(wsIdx, dIdx)} className={styles.actionButton}>
                         <SaveIcon />
                       </button>
                     </div>
-                    <button
-                      onClick={() => deleteDel(wsIdx, dIdx)}
-                      className={styles.actionButton}
-                      style={{ opacity: 1 }}
-                    >
-                      <TrashIcon />
-                    </button>
                   </div>
                 );
               }
@@ -317,6 +357,8 @@ export function ProjectPlan({ briefData, planData, onUpdateBrief: _onUpdateBrief
                   onClick={() => {
                     setEditingDel({ wsIdx, delIdx: dIdx });
                     setEditingDelValue(del.name);
+                    setEditingDelType(del.type || "");
+                    setEditingDelDescription(del.description || "");
                     setNewDel(null);
                   }}
                   style={{ cursor: 'pointer' }}
@@ -324,15 +366,21 @@ export function ProjectPlan({ briefData, planData, onUpdateBrief: _onUpdateBrief
                   <div className={styles.bulletIcon}>
                     <div className={styles.bulletIconInset}><CircleBullet /></div>
                   </div>
-                  <div className={styles.deliverableContent}>
-                    <p className={styles.deliverableName}>{del.name}</p>
-                    {del.description && <p className={styles.deliverableDescription}>{del.description}</p>}
-                  </div>
-                  <div
-                    className={styles.actionButton}
-                    style={{ opacity: isHovered ? 1 : 0, transition: 'opacity 150ms ease' }}
-                  >
-                    <Edit3 size={15} color="#008AC0" />
+                  <div className={styles.deliverableTopRow}>
+                    <div className={styles.deliverableContent}>
+                      <p className={styles.deliverableName}>{del.name}</p>
+                      {del.description && <p className={styles.deliverableDescription}>{del.description}</p>}
+                    </div>
+                    <div className={styles.deliverableMetaCol}>
+                      {del.type && (
+                        <div className={styles.typeChip}>
+                          <p className={styles.typeChipLabel}>{del.type}</p>
+                        </div>
+                      )}
+                      <div style={{ opacity: isHovered ? 1 : 0, transition: 'opacity 150ms ease' }}>
+                        <Edit3 size={15} color="#008AC0" />
+                      </div>
+                    </div>
                   </div>
                 </div>
               );
@@ -340,30 +388,48 @@ export function ProjectPlan({ briefData, planData, onUpdateBrief: _onUpdateBrief
 
             {/* New deliverable input */}
             {newDel?.wsIdx === wsIdx && (
-              <div className={styles.deliverableRow}>
-                <div className={styles.bulletIcon}>
-                  <div className={styles.bulletIconInset}><CircleBullet /></div>
+              <div className={styles.deliverableEditContainer}>
+                <div className={styles.deliverableRow}>
+                  <div className={styles.bulletIcon}>
+                    <div className={styles.bulletIconInset}><CircleBullet /></div>
+                  </div>
+                  <div className={styles.editTitleBox}>
+                    <input
+                      autoFocus
+                      className={styles.editInput}
+                      value={newDelValue}
+                      onChange={(e) => setNewDelValue(e.target.value)}
+                      placeholder="New deliverable"
+                      onKeyDown={(e) => { if (e.key === "Escape") setNewDel(null); }}
+                    />
+                  </div>
+                  <div className={styles.typeSelectWrapper}>
+                    <select
+                      className={styles.typeSelect}
+                      value={newDelType}
+                      onChange={(e) => setNewDelType(e.target.value)}
+                    >
+                      <option value="">Select type...</option>
+                      {DELIVERABLE_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
+                    </select>
+                    <ChevronDown size={11} color="#72797e" className={styles.typeSelectChevron} />
+                  </div>
+                  <button onClick={() => setNewDel(null)} className={styles.actionButton}>
+                    <TrashIcon />
+                  </button>
                 </div>
-                <div className={styles.editInputWrapper}>
-                  <input
-                    autoFocus
-                    className={styles.editInput}
-                    value={newDelValue}
-                    onChange={(e) => setNewDelValue(e.target.value)}
-                    placeholder="New deliverable"
-                    onKeyDown={(e) => { if (e.key === "Enter") saveNewDel(wsIdx); if (e.key === "Escape") setNewDel(null); }}
+                <div className={styles.editDescRow}>
+                  <textarea
+                    className={styles.descriptionInput}
+                    value={newDelDescription}
+                    onChange={(e) => setNewDelDescription(e.target.value)}
+                    placeholder="Add a description..."
+                    rows={2}
                   />
                   <button onClick={() => saveNewDel(wsIdx)} className={styles.actionButton}>
                     <SaveIcon />
                   </button>
                 </div>
-                <button
-                  onClick={() => setNewDel(null)}
-                  className={styles.actionButton}
-                  style={{ opacity: 1 }}
-                >
-                  <TrashIcon />
-                </button>
               </div>
             )}
 

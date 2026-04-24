@@ -45,9 +45,9 @@ export default function MainFlow() {
       {
         title: "Employee Communications",
         deliverables: [
-          { name: "Content Audit Report", description: "A content audit report identifying gaps and suggesting improvements for promotional pages.", completed: false },
-          { name: "Updated Copy for All Promotional Pages", description: "Crafting engaging copy for promotional pages, aligned with brand voice and objectives.", completed: false },
-          { name: "SEO Keyword Mapping Document", description: "A document outlining target keywords and their placement for better SEO.", completed: false },
+          { name: "Content Audit Report", type: "Report", description: "A content audit report identifying gaps and suggesting improvements for promotional pages.", completed: false },
+          { name: "Updated Copy for All Promotional Pages", type: "Web Page", description: "Crafting engaging copy for promotional pages, aligned with brand voice and objectives.", completed: false },
+          { name: "SEO Keyword Mapping Document", type: "Document", description: "A document outlining target keywords and their placement for better SEO.", completed: false },
         ],
         timeline: "1-2 Weeks | June 3, 2026 - July 15, 2026",
         approver: "John Doe",
@@ -56,7 +56,7 @@ export default function MainFlow() {
       {
         title: "Digital Execution",
         deliverables: [
-          { name: "Updated Webflow", description: "Updating the Webflow CMS with the latest promotional content.", completed: false }
+          { name: "Updated Webflow", type: "Web Page", description: "Updating the Webflow CMS with the latest promotional content.", completed: false }
         ],
         timeline: "1-2 Weeks | June 3, 2026 - July 15, 2026",
         approver: "John Doe",
@@ -65,8 +65,8 @@ export default function MainFlow() {
       {
         title: "Fuze & AV",
         deliverables: [
-          { name: "New Mockups for Landing Page", description: "Creating mockups for the landing page, showcasing updated content and UI.", completed: false },
-          { name: "Figma Design System Updates", description: "Updating the Figma design system for promotional page consistency.", completed: false }
+          { name: "New Mockups for Landing Page", type: "Design File", description: "Creating mockups for the landing page, showcasing updated content and UI.", completed: false },
+          { name: "Figma Design System Updates", type: "Design File", description: "Updating the Figma design system for promotional page consistency.", completed: false }
         ],
         timeline: "1-2 Weeks | June 3, 2026 - July 15, 2026",
         approver: "John Doe",
@@ -75,9 +75,9 @@ export default function MainFlow() {
       {
         title: "Digital Execution",
         deliverables: [
-          { name: "API Integration Plan", description: "A plan for integrating new promotional features with existing APIs.", completed: false },
-          { name: "New Feature Codebase", description: "Developing code for new promotional features, ensuring scalability.", completed: false },
-          { name: "Performance Report Post-Launch", description: "A post-launch analysis of campaign performance, identifying areas for optimization.", completed: false }
+          { name: "API Integration Plan", type: "Document", description: "A plan for integrating new promotional features with existing APIs.", completed: false },
+          { name: "New Feature Codebase", type: "Other", description: "Developing code for new promotional features, ensuring scalability.", completed: false },
+          { name: "Performance Report Post-Launch", type: "Report", description: "A post-launch analysis of campaign performance, identifying areas for optimization.", completed: false }
         ],
         timeline: "1-2 Weeks | June 3, 2026 - July 15, 2026",
         approver: "John Doe",
@@ -132,7 +132,7 @@ export default function MainFlow() {
         setIsGeneratingPlan(false);
       } else if (step === 3) {
         const newPlanData = JSON.parse(JSON.stringify(planData));
-        newPlanData.workstreams[3].deliverables.splice(2, 0, { name: "Staging Content Approval", description: "Approval of staged content before launch.", completed: false });
+        newPlanData.workstreams[3].deliverables.splice(2, 0, { name: "Staging Content Approval", type: "Document", description: "Approval of staged content before launch.", completed: false });
         setPlanData(newPlanData);
         aiResponseText = "Nice addition.\n\nI've added that deliverable to the list, once you think this plan is ready to go I can route the work to each team directly.";
         setStep(4);

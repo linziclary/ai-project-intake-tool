@@ -153,9 +153,42 @@
   padding-left: 0;
 }
 
+.deliverableItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.deliverableItemTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
 .deliverable {
   color: #0c2737;
   font-size: 14px;
+  font-weight: 700;
+  flex: 1;
+  min-width: 0;
+}
+
+.typeChip {
+  background-color: #e6e9eb;
+  color: #0c2737;
+  padding: 4px 8px;
+  border-radius: 32px;
+  font-size: 12px;
+  line-height: 14px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.deliverableDesc {
+  color: #72797e;
+  font-size: 12px;
+  line-height: 14px;
 }
 
 .workstreamMeta {

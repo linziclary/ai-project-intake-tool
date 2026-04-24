@@ -81,7 +81,13 @@ export function PlanReviewView({ briefData, planData, onBackToDraft }: PlanRevie
 
                 <div className={styles.deliverablesList}>
                   {ws.deliverables.map((del: any, dIdx: number) => (
-                    <p key={dIdx} className={styles.deliverable}>{del.name}</p>
+                    <div key={dIdx} className={styles.deliverableItem}>
+                      <div className={styles.deliverableItemTop}>
+                        <p className={styles.deliverable}>{del.name}</p>
+                        {del.type && <span className={styles.typeChip}>{del.type}</span>}
+                      </div>
+                      {del.description && <p className={styles.deliverableDesc}>{del.description}</p>}
+                    </div>
                   ))}
                 </div>
 

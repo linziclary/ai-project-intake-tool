@@ -368,6 +368,119 @@
   border: none;
 }
 
+.deliverableTopRow {
+  display: flex;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+  align-items: flex-start;
+}
+
+.deliverableMetaCol {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+
+.typeChip {
+  background-color: #e6e9eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 8px;
+  border-radius: 32px;
+  flex-shrink: 0;
+}
+
+.typeChipLabel {
+  font-family: 'Arial Nova', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 14px;
+  color: #0c2737;
+  white-space: nowrap;
+}
+
+.deliverableEditContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.editTitleBox {
+  background-color: #fff;
+  border: 1px solid #b5bdc3;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 8px;
+  min-width: 0;
+}
+
+.typeSelectWrapper {
+  position: relative;
+  flex-shrink: 0;
+  width: 178px;
+  display: flex;
+  align-items: center;
+}
+
+.typeSelect {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #b5bdc3;
+  padding: 8px 28px 8px 12px;
+  border-radius: 8px;
+  font-family: 'Arial Nova', sans-serif;
+  font-size: 12px;
+  line-height: 14px;
+  color: #0c2737;
+  cursor: pointer;
+  outline: none;
+}
+
+.typeSelectChevron {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+.editDescRow {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  width: 100%;
+  padding-left: 23px;
+}
+
+.descriptionInput {
+  flex: 1;
+  min-width: 0;
+  background-color: #fff;
+  border: 1px solid #b5bdc3;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-family: 'Arial Nova', sans-serif;
+  font-size: 12px;
+  line-height: 14px;
+  color: #0c2737;
+  resize: vertical;
+  outline: none;
+}
+
+.descriptionInput::placeholder {
+  color: #b5bdc3;
+}
+
 .footer {
   display: flex;
   align-items: flex-end;
