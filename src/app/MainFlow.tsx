@@ -44,6 +44,7 @@ export default function MainFlow() {
     workstreams: [
       {
         title: "Employee Communications",
+        channel: "Web",
         deliverables: [
           { name: "Content Audit Report", type: "Report", description: "A content audit report identifying gaps and suggesting improvements for promotional pages.", completed: false },
           { name: "Updated Copy for All Promotional Pages", type: "Web Page", description: "Crafting engaging copy for promotional pages, aligned with brand voice and objectives.", completed: false },
@@ -55,6 +56,7 @@ export default function MainFlow() {
       },
       {
         title: "Digital Execution",
+        channel: "Email",
         deliverables: [
           { name: "Updated Webflow", type: "Web Page", description: "Updating the Webflow CMS with the latest promotional content.", completed: false }
         ],
@@ -64,6 +66,7 @@ export default function MainFlow() {
       },
       {
         title: "Fuze & AV",
+        channel: "Paid Media",
         deliverables: [
           { name: "New Mockups for Landing Page", type: "Design File", description: "Creating mockups for the landing page, showcasing updated content and UI.", completed: false },
           { name: "Figma Design System Updates", type: "Design File", description: "Updating the Figma design system for promotional page consistency.", completed: false }
@@ -74,6 +77,7 @@ export default function MainFlow() {
       },
       {
         title: "Digital Execution",
+        channel: "UX",
         deliverables: [
           { name: "API Integration Plan", type: "Document", description: "A plan for integrating new promotional features with existing APIs.", completed: false },
           { name: "New Feature Codebase", type: "Other", description: "Developing code for new promotional features, ensuring scalability.", completed: false },

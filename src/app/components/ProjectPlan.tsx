@@ -244,7 +244,7 @@ export function ProjectPlan({ briefData, planData, onUpdateBrief: _onUpdateBrief
             {/* Workstream header */}
             <div className={styles.workstreamHeader}>
               <div className={styles.workstreamHeaderLeft}>
-                <p className={styles.workstreamTitle}>{ws.title}</p>
+                <p className={styles.workstreamTitle}>{ws.channel || ws.title}</p>
                 <div style={{ display: 'flex', gap: '4px', alignItems: 'center', flexShrink: 0 }}>
                   <div className={styles.countPill}>
                     <p className={styles.countPillLabel}>
