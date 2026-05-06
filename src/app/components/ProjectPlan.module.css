@@ -288,6 +288,23 @@
   width: 100%;
 }
 
+.emptyState {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 0;
+  width: 100%;
+}
+
+.emptyStateText {
+  flex: 1;
+  font-family: 'Arial Nova:Regular', sans-serif;
+  font-size: 12px;
+  line-height: 14px;
+  color: #b5bdc3;
+  text-align: center;
+}
+
 .deliverableRow {
   display: flex;
   gap: 8px;

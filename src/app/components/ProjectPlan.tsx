@@ -244,7 +244,9 @@ export function ProjectPlan({ briefData, planData, onUpdateBrief: _onUpdateBrief
           <div key={group.title} className={styles.workstreamGroup}>
             <p className={styles.workstreamGroupTitle}>{group.title}</p>
 
-          {group.items.map(({ ws, wsIdx }) => (
+          {group.items.map(({ ws, wsIdx }) => {
+          const isEmpty = ws.deliverables.length === 0 && newDel?.wsIdx !== wsIdx;
+          return (
           <div key={wsIdx} className={styles.workstreamCard}>
 
             {/* Workstream header */}
@@ -267,12 +269,21 @@ export function ProjectPlan({ briefData, planData, onUpdateBrief: _onUpdateBrief
                   </button>
                 </div>
               </div>
-              <p className={clsx(styles.routedText, ws.isRouted && styles.routedTextSuccess)}>
-                Routed to {ws.routedTo}
-              </p>
+              {!isEmpty && (
+                <p className={clsx(styles.routedText, ws.isRouted && styles.routedTextSuccess)}>
+                  Routed to {ws.routedTo}
+                </p>
+              )}
             </div>
 
-            {/* Deliverables */}
+            {isEmpty ? (
+              <div className={styles.emptyState}>
+                <p className={styles.emptyStateText}>
+                  To add deliverables to this channel prompt via chat or using the plus icon above.
+                </p>
+              </div>
+            ) : (
+            /* Deliverables */
             <div className={styles.deliverablesList}>
             {ws.deliverables.map((del: any, dIdx: number) => {
               const isEditing = editingDel?.wsIdx === wsIdx && editingDel?.delIdx === dIdx;
@@ -411,9 +422,11 @@ export function ProjectPlan({ briefData, planData, onUpdateBrief: _onUpdateBrief
               </div>
             )}
             </div>
+            )}
 
           </div>
-          ))}
+          );
+          })}
           </div>
         ))}
       </div>
